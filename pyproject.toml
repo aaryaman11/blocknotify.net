@@ -10,6 +10,8 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+django = "^4.1.7"
+dj-database-url = "^1.2.0"
 
 
 [build-system]
