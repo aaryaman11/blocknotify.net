@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+    nginx-proxy:
+      image: jwilder/nginx-proxy
+      restart: always
+      container_name: nginx-proxy
+      ports:
+        - '80:80'
+        - '443:443'
+      volumes:
+        - '/var/local/nginx/certs:/etc/nginx/certs:ro'
+        - '/var/local/nginx/vhost:/etc/nginx/vhost.d'
+        - '/var/local/nginx/html:/usr/share/nginx/html'
+        - '/var/run/docker.sock:/tmp/docker.sock:ro'
+      networks:
+        - proxy-tier
+
+    letsencrypt-nginx-proxy-companion:
+      image: jrcs/letsencrypt-nginx-proxy-companion
+      restart: always
+      container_name: nginx-le
+      volumes:
+        - '/var/local/nginx/certs:/etc/nginx/certs:rw'
+        - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      volumes_from:
+        - nginx-proxy
+      networks:
+        - proxy-tier
+
+    blocknotify:
+      build: .
+      restart: always
+      container_name: bridge
+      environment:
+        - VIRTUAL_HOST=blocknotify.net
+        - LETSENCRYPT_HOST=blocknotify.net
+        - LETSENCRYPT_EMAIL=admin@blocknotify.net
+      networks:
+        - proxy-tier
+
+
+networks:
+  proxy-tier:
+    external:
+      name: nginx-proxy

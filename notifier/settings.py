@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authuser',
-    # 'blockmonitor',
+    'blockmonitor',
 ]
 
 AUTH_USER_MODEL = 'authuser.User'
