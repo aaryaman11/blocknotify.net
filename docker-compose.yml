@@ -1,45 +1,55 @@
-version: '3.3'
+version: '3.7'
+
 services:
-    nginx-proxy:
-      image: jwilder/nginx-proxy
-      restart: always
-      container_name: nginx-proxy
-      ports:
-        - '80:80'
-        - '443:443'
-      volumes:
-        - '/var/local/nginx/certs:/etc/nginx/certs:ro'
-        - '/var/local/nginx/vhost:/etc/nginx/vhost.d'
-        - '/var/local/nginx/html:/usr/share/nginx/html'
-        - '/var/run/docker.sock:/tmp/docker.sock:ro'
-      networks:
-        - proxy-tier
 
-    letsencrypt-nginx-proxy-companion:
-      image: jrcs/letsencrypt-nginx-proxy-companion
-      restart: always
-      container_name: nginx-le
-      volumes:
-        - '/var/local/nginx/certs:/etc/nginx/certs:rw'
-        - '/var/run/docker.sock:/var/run/docker.sock:ro'
-      volumes_from:
-        - nginx-proxy
-      networks:
-        - proxy-tier
+  blocknotify:
+    container_name: blocknotify
+    build: .
+    environment:
+      - VIRTUAL_HOST=blocknotify.net
+      - LETSENCRYPT_HOST=blocknotify.net
+      - LETSENCRYPT_EMAIL=admin@blocknotify.net
+    restart: always
 
-    blocknotify:
-      build: .
-      restart: always
-      container_name: bridge
-      environment:
-        - VIRTUAL_HOST=blocknotify.net
-        - LETSENCRYPT_HOST=blocknotify.net
-        - LETSENCRYPT_EMAIL=admin@blocknotify.net
-      networks:
-        - proxy-tier
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
 
+  letsencrypt:
+    container_name: letsencrypt
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam:ro
+      - certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    restart: always
+
+volumes:
+  vhost:
+  html:
+  certs:
+  dhparam:
+  acme:
+  conf:
 
 networks:
-  proxy-tier:
-    external:
-      name: nginx-proxy
+  default:
+    name: nginx-proxy
