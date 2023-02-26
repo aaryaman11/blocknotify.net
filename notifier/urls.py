@@ -22,9 +22,11 @@ router = routers.DefaultRouter()
 router.register(r'phoneVerifications', views.PhoneVerificationView, 'phoneVerification')
 
 urlpatterns = [
-    #path('', include('blockmonitor.urls')),
+    path('', include('blockmonitor.urls')),
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    # path('api/', include(router.urls)),
+    # path('', include('approvalgate.urls')),
+
 ]
 
 # Per...
