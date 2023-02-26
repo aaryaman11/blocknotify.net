@@ -36,41 +36,19 @@ export default class CustomModal extends Component {
 
     return (
       <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Todo Item</ModalHeader>
+        <ModalHeader toggle={toggle}>New Phone Registration</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
-              <Label for="todo-title">Title</Label>
+              <Label for="verification-title">Phone</Label>
               <Input
                 type="text"
-                id="todo-title"
+                id="verification-title"
                 name="title"
                 value={this.state.activeItem.title}
                 onChange={this.handleChange}
-                placeholder="Enter Todo Title"
+                placeholder="Enter Phone Number"
               />
-            </FormGroup>
-            <FormGroup>
-              <Label for="todo-description">Description</Label>
-              <Input
-                type="text"
-                id="todo-description"
-                name="description"
-                value={this.state.activeItem.description}
-                onChange={this.handleChange}
-                placeholder="Enter Todo description"
-              />
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type="checkbox"
-                  name="completed"
-                  checked={this.state.activeItem.completed}
-                  onChange={this.handleChange}
-                />
-                Completed
-              </Label>
             </FormGroup>
           </Form>
         </ModalBody>
