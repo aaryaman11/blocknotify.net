@@ -1,0 +1,13 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "hardhat": "^2.12.7"
+  },
+  "scripts": {
+    "sign-phone-number": "npx hardhat run --network pxltest scripts/sign-phone-number.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
