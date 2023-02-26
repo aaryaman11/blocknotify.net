@@ -24,7 +24,13 @@ Setup Environment:
 poetry shell
 ```
 
+Note: Running the following is a complete DB wipe and rebuild:
+```shell
+rm -rf ./db.sqlite3; ./authuser/migrations/000*; ./blockmonitor/migrations/000*; python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser && python manage.py runserver
+```
+
 To Clean Up:
+
 ```shell
 rm -f ./db.sqlite3
 rm -f ./authuser/migrations/000*
@@ -32,22 +38,26 @@ rm -f ./blockmonitor/migrations/000*
 ```
 
 Generate DB Migrations and do the Migrate:
+
 ```shell
 python manage.py makemigrations
 python manage.py migrate
 ```
 
 Create the admin account:
+
 ```shell
 python manage.py createsuperuser
 ```
 
 Start the service
+
 ```shell
 python manage.py runserver
 ```
 
 Run server:
+
 ```shell
 python manage.py runserver
 ```
@@ -55,6 +65,7 @@ python manage.py runserver
 # Front-End
 
 Run server:
+
 ```shell
 npm start
 ```
