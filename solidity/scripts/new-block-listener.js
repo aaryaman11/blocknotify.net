@@ -14,7 +14,11 @@ async function main() {
   provider.on('block', (blockNumber) => {
     provider.getBlock(blockNumber).then((block) => {
       console.log(block);
-      console.log("Txn 0: %o", block['transactions'][0]);
+      const txHash0 = block['transactions'][0];
+      console.log("Tx Hash 0: %o", txHash0);
+      provider.getTransaction(txHash0).then((tx) => {
+        console.log("Txn 0: %o", tx);
+      });
     });
   });
 
