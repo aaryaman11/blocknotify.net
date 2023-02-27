@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Modal from "./components/Modal";
+import RegisterModal from "./components/RegisterModal";
+import VerifyModal from "./components/VerifyModal";
 import axios from "axios";
 
 class App extends Component {
@@ -8,7 +9,8 @@ class App extends Component {
     this.state = {
       viewVerifier: false,
       verificationList: [],
-      modal: false,
+      registerModal: false,
+      verifyModal: false,
       activeItem: {
         phone: "",
         signature: "",
@@ -28,12 +30,16 @@ class App extends Component {
         .catch((err) => console.log(err));
   };
 
-  toggle = () => {
-    this.setState({ modal: !this.state.modal });
+  registerToggle = () => {
+    this.setState({ registerModal: !this.state.registerModal });
   };
 
-  handleSubmit = (item) => {
-    this.toggle();
+  verifyToggle = () => {
+    this.setState({ verifyModal: !this.state.verifyModal });
+  };
+
+  handleRegisterSubmit = (item) => {
+    this.registerToggle();
     // TODO: replace this with an actual signature of item.phone from a wallet:
     const signature = "0xf5d6863ac0db1b3728ed24c514ab6136b828066812dbca4804fe3fbe4bb515bd6376dc621f75c2b45f98482c234a2a802bd9bd0c44ef03c73cf0217377ffc4a91b"
     item['signature'] = signature;
@@ -41,16 +47,38 @@ class App extends Component {
     const phone = "30305676789";
     // TODO: remove this once we are receiving real signatures, this phone number is for this signature
     item['fake_phone'] = phone;
-    if (item.id) {
-      console.log("editing item: %o", item)
-      axios
-          .put(`http://localhost:8000/api/register/${item.id}/`, item)
-          .then((res) => this.refreshList());
-      return;
-    }
-    console.log("creating item: %o", item)
+    // TODO: we don't support editing yet...
+    // if (item.id) {
+    //   console.log("editing item: %o", item)
+    //   axios
+    //       .put(`http://localhost:8000/api/register/${item.id}/`, item)
+    //       .then((res) => this.refreshList());
+    //   return;
+    // }
+    // console.log("creating item: %o", item)
     axios
         .post("http://localhost:8000/api/register", item)
+        .then((res) => this.refreshList());
+  };
+
+  handleVerifySubmit = (item) => {
+    this.verifyToggle();
+    // TODO: replace this with an actual signature of item.challenge from a wallet:
+    const signature = "0x6afb3b11522beff5d7ac3ef2460dff154cbec88fe3f2af4850a448f24e425c921980e442ccfd650784fe3e64188701165391c663e0da8933dbe8ae83d632b61c1c"
+    item['signature'] = signature;
+    // TODO: remove this once we are receiving real signatures, this challenge is for this signature
+    const challenge = "123123";
+    item['challenge'] = challenge;
+    // if (item.id) {
+    //   console.log("editing item: %o", item)
+    //   axios
+    //       .put(`http://localhost:8000/api/register/${item.id}/`, item)
+    //       .then((res) => this.refreshList());
+    //   return;
+    // }
+    // console.log("creating item: %o", item)
+    axios
+        .post("http://localhost:8000/api/verify", item)
         .then((res) => this.refreshList());
   };
 
@@ -60,14 +88,20 @@ class App extends Component {
         .then((res) => this.refreshList());
   };
 
-  createItem = () => {
+  register = () => {
     const item = { phone: "", signature: "" };
 
-    this.setState({ activeItem: item, modal: !this.state.modal });
+    this.setState({ activeItem: item, registerModal: !this.state.registerModal });
+  };
+
+  verify = () => {
+    const item = { challenge: "", signature: "" };
+
+    this.setState({ activeItem: item, verifyModal: !this.state.registerModal });
   };
 
   editItem = (item) => {
-    this.setState({ activeItem: item, modal: !this.state.modal });
+    this.setState({ activeItem: item, registerModal: !this.state.registerModal });
   };
 
   displayVerifier = (status) => {
@@ -78,24 +112,24 @@ class App extends Component {
     return this.setState({ viewVerifier: false });
   };
 
-  renderTabList = () => {
-    return (
-        <div className="nav nav-tabs">
-        <span
-            onClick={() => this.displayVerifier(true)}
-            className={this.state.viewVerifier ? "nav-link active" : "nav-link"}
-        >
-          Complete
-        </span>
-          <span
-              onClick={() => this.displayVerifier(false)}
-              className={this.state.viewVerifier ? "nav-link" : "nav-link active"}
-          >
-          Incomplete
-        </span>
-        </div>
-    );
-  };
+  // renderTabList = () => {
+  //   return (
+  //       <div className="nav nav-tabs">
+  //       <span
+  //           onClick={() => this.displayVerifier(true)}
+  //           className={this.state.viewVerifier ? "nav-link active" : "nav-link"}
+  //       >
+  //         Complete
+  //       </span>
+  //         <span
+  //             onClick={() => this.displayVerifier(false)}
+  //             className={this.state.viewVerifier ? "nav-link" : "nav-link active"}
+  //         >
+  //         Incomplete
+  //       </span>
+  //       </div>
+  //   );
+  // };
 
   renderItems = () => {
     const { viewVerifier } = this.state;
@@ -145,23 +179,42 @@ class App extends Component {
                 <div className="mb-4">
                   <button
                       className="btn btn-primary"
-                      onClick={this.createItem}
+                      onClick={this.register}
                   >
-                    Add Phone Number
+                    Register Phone
                   </button>
                 </div>
-                {this.renderTabList()}
+              </div>
+              <div className="card p-3">
+                <div className="mb-4">
+                  <button
+                      className="btn btn-primary"
+                      onClick={this.verify}
+                  >
+                    Verify Phone
+                  </button>
+                </div>
+              </div>
+              {/*{this.renderTabList()}*/}
+              <div className="card p-3">
                 <ul className="list-group list-group-flush border-top-0">
                   {this.renderItems()}
                 </ul>
               </div>
             </div>
           </div>
-          {this.state.modal ? (
-              <Modal
+          {this.state.registerModal ? (
+              <RegisterModal
                   activeItem={this.state.activeItem}
-                  toggle={this.toggle}
-                  onSave={this.handleSubmit}
+                  toggle={this.registerToggle}
+                  onSave={this.handleRegisterSubmit}
+              />
+          ) : null}
+          {this.state.verifyModal ? (
+              <VerifyModal
+                  activeItem={this.state.activeItem}
+                  toggle={this.verifyToggle}
+                  onSave={this.handleVerifySubmit}
               />
           ) : null}
         </main>

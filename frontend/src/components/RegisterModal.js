@@ -11,7 +11,7 @@ import {
   Label,
 } from "reactstrap";
 
-export default class CustomModal extends Component {
+export default class RegisterModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,9 +22,9 @@ export default class CustomModal extends Component {
   handleChange = (e) => {
     let { name, value } = e.target;
 
-    if (e.target.type === "checkbox") {
-      value = e.target.checked;
-    }
+    // if (e.target.type === "checkbox") {
+    //   value = e.target.checked;
+    // }
 
     const activeItem = { ...this.state.activeItem, [name]: value };
 
@@ -36,7 +36,7 @@ export default class CustomModal extends Component {
 
     return (
       <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}>New Phone Registration</ModalHeader>
+        <ModalHeader toggle={toggle}>Phone Registration</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>

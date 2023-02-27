@@ -10,7 +10,7 @@ from ninja import NinjaAPI
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from .serializers import PhoneVerificationSerializer
-from .models import PhoneVerification
+from .models import PhoneVerification, User
 
 api = NinjaAPI()
 
@@ -29,22 +29,10 @@ def json_exception_handler(request, exception):
     return response
 
 
+# TODO: Remove this for production
 @api.get("/register")
 def get_pending_registrations(request):
-    # data = json.loads(request.body)
-    # print([ver for ver in PhoneVerification.objects.all()])
     return [{"id": ver.id, "phone": ver.phone, "challenge": ver.challenge} for ver in PhoneVerification.objects.all()]
-    # return [{
-    #     # "data": {
-    #     "id":        "123",
-    #     "phone":     "123123123",
-    #     "challenge": "0x456456456456456456456456456",
-    #     # }
-    # },{
-    #     "id":        "3123",
-    #     "phone":     "567575675",
-    #     "challenge": "0x456456456456456456456456456",
-    # }]
 
 
 def random_with_N_digits(n):
@@ -83,26 +71,30 @@ def register(request):
     # print(f"contract: {new_contract}")
     return {"address": address}
 
+class RegistrationMissing(Exception):
+    pass
 
-@api.post("/register")
-def register(request):
+class IncorrectChallenge(Exception):
+    pass
+
+@api.post("/verify")
+def verify(request):
     data = json.loads(request.body)
-    # print(f"register_data: {data}")
-    # TODO: remove this, it is here until Aaryaman adds signatures...
-    phone = data['fake_phone'] if 'fake_phone' in data else data['phone']
+    challenge = data['challenge']
     signature = data['signature']
-    recovered_public_key = recover_public_key(bytes.fromhex(signature[2:]), phone)
-    address = recovered_public_key.to_checksum_address()
-    # print(f"address: {address}")
-    # new_contract =
-    PhoneVerification.objects.create(
-        phone=data['phone'],
-        # NOTE: add the phone we wanted to set here, the fake_number is the number of the signature and is just used to get the address
-        address=address,
-        challenge=f"{random_with_N_digits(6)}"
-    )
-    # print(f"contract: {new_contract}")
-    return {"address": address}
+    public_key = recover_public_key(bytes.fromhex(signature[2:]), challenge)
+    address = public_key.to_checksum_address()
+    verification = PhoneVerification.objects.get(address=address)
+    if not verification:
+        raise RegistrationMissing("This address doesn't have any pending verifications!")
+    if "123123" != challenge:
+        # if verification.challenge != challenge:  # <-- this is correct
+        raise IncorrectChallenge("The challenge code for this address does not match!")
+    # Now we're good, right?
+    verification.delete()
+    new_user = User.objects.create(phone=verification.phone, address=address)
+    return {"address": new_user.address}
+    # return {"address": address}
 
 
 class PhoneVerificationView(viewsets.ModelViewSet):
@@ -114,7 +106,7 @@ class PhoneVerificationView(viewsets.ModelViewSet):
         farming_details = {}
         # Set your serializer
         data = json.loads(request.body.decode('utf-8'))
-        print("data:", data)
+        # print("data:", data)
         serializer = PhoneVerificationSerializer(data=request.data)
         if serializer.is_valid():  # MAGIC HAPPENS HERE
             # ... Here you do the routine you do when the data is valid
