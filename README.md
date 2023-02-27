@@ -26,7 +26,7 @@ poetry shell
 
 Note: Running the following is a complete DB wipe and rebuild:
 ```shell
-rm -rf ./db.sqlite3; ./authuser/migrations/000*; ./blockmonitor/migrations/000*; python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser && python manage.py runserver
+rm -f ./db.sqlite3; rm -f ./authuser/migrations/000*; rm -f ./blockmonitor/migrations/000*; python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser && python manage.py runserver
 ```
 
 To Clean Up:
