@@ -26,6 +26,7 @@ async function main() {
     console.log(`Phone:     ${phone}`);
     console.log(`Signer:    ${wallet.address}`);
     console.log(`Signature: ${signature}`);
+    // 0xf5d6863ac0db1b3728ed24c514ab6136b828066812dbca4804fe3fbe4bb515bd6376dc621f75c2b45f98482c234a2a802bd9bd0c44ef03c73cf0217377ffc4a91b
 }
 
 main().catch((error) => {

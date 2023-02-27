@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4154a454-98f4-4005-928e-b9cf727492c9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/blocknotify.net.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/blocknotify.net.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authuser/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/authuser/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/authuser/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/authuser/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/authuser/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/authuser/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/authuser/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/serializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/static/css/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blockmonitor/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notifier/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notifier/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notifier/local_settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notifier/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notifier/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notifier/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MKUZoylKzFrSFwsABCEn41AGZz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/sooth/projects/blocknotify.net/backend",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4154a454-98f4-4005-928e-b9cf727492c9" name="Changes" comment="" />
+      <created>1677515827654</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677515827654</updated>
+      <workItem from="1677515832190" duration="439000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

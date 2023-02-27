@@ -23,7 +23,7 @@ class App extends Component {
 
   refreshList = () => {
     axios
-        .get("/api/phoneVerifications/")
+        .get("http://localhost:8000/api/register")
         .then((res) => this.setState({ verificationList: res.data }))
         .catch((err) => console.log(err));
   };
@@ -34,23 +34,28 @@ class App extends Component {
 
   handleSubmit = (item) => {
     this.toggle();
-
+    // TODO: replace this with an actual signature of item.phone from a wallet:
+    const signature = "0xf5d6863ac0db1b3728ed24c514ab6136b828066812dbca4804fe3fbe4bb515bd6376dc621f75c2b45f98482c234a2a802bd9bd0c44ef03c73cf0217377ffc4a91b"
+    item['signature'] = signature;
+    // TODO: remove this once we are receiving real signatures
+    const phone = "30305676789";
+    item['phone'] = phone;
     if (item.id) {
-      console.log("editing item")
+      console.log("editing item: %o", item)
       axios
-          .put(`/api/phoneVerifications/${item.id}/`, item)
+          .put(`http://localhost:8000/api/register/${item.id}/`, item)
           .then((res) => this.refreshList());
       return;
     }
-    console.log("creating item")
+    console.log("creating item: %o", item)
     axios
-        .post("/api/phoneVerifications/", item)
+        .post("http://localhost:8000/api/register", item)
         .then((res) => this.refreshList());
   };
 
   handleDelete = (item) => {
     axios
-        .delete(`/api/phoneVerifications/${item.id}/`)
+        .delete(`/api/register/${item.id}/`)
         .then((res) => this.refreshList());
   };
 

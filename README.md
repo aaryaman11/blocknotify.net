@@ -1,18 +1,14 @@
-blocknotify.net
+# blocknotify.net
 
-# Back-End
+## Back-End
 
-Install Poetry:
+See [Back-End README](backend/README.md)
 
-```shell
-pip install poetry
-poetry config virtualenvs.in-project true
-```
+## Front-End
 
-_NOTE: If forgot to do the `in-project` option try moving the `~/.cache` directory as that is where these will be stored
-but be aware that other things are in there and deleting it might cause you to have to resync/reauth for some services._
+See [Front-End README](frontend/README.md)
 
-Install dependencies:
+## Solidity
 
 ```shell
 poetry install
