@@ -48,6 +48,14 @@ export default class CustomModal extends Component {
                 value={this.state.activeItem.phone}
                 onChange={this.handleChange}
                 placeholder="Enter Phone Number"
+              /><br></br>
+               <Input // for wallet address insertion 
+                type="text"
+                id="verification-phone"
+                name="Wallet Address"
+                //value={this.state.activeItem.phone}
+                onChange={this.handleChange}
+                placeholder="Enter Wallet Address"
               />
             </FormGroup>
           </Form>

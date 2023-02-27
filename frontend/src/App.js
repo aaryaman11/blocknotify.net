@@ -23,9 +23,9 @@ class App extends Component {
 
   refreshList = () => {
     axios
-        .get("http://localhost:8000/api/register")
-        .then((res) => this.setState({ verificationList: res.data }))
-        .catch((err) => console.log(err));
+      .get("http://localhost:8000/api/register")
+      .then((res) => this.setState({ verificationList: res.data }))
+      .catch((err) => console.log(err));
   };
 
   toggle = () => {
@@ -36,24 +36,26 @@ class App extends Component {
     this.toggle();
     // TODO: replace this with an actual signature of item.phone from a wallet:
     const signature = "0xf5d6863ac0db1b3728ed24c514ab6136b828066812dbca4804fe3fbe4bb515bd6376dc621f75c2b45f98482c234a2a802bd9bd0c44ef03c73cf0217377ffc4a91b"
+    // adding wallet signature
     item['signature'] = signature
     if (item.id) {
-      console.log("editing item: %o", item)
+      // console.log("editing item: %o", item)
       axios
-          .put(`http://localhost:8000/api/register/${item.id}/`, item)
-          .then((res) => this.refreshList());
+        .put(`http://localhost:8000/api/register/${item.id}/`, item)
+        .then((res) => this.refreshList());
       return;
     }
-    console.log("creating item: %o", item)
+    // console.log("creating item: %o", item)
+
     axios
-        .post("http://localhost:8000/api/register", item)
-        .then((res) => this.refreshList());
+      .post("http://localhost:8000/api/register", item)
+      .then((res) => this.refreshList());
   };
 
   handleDelete = (item) => {
     axios
-        .delete(`/api/register/${item.id}/`)
-        .then((res) => this.refreshList());
+      .delete(`/api/register/${item.id}/`)
+      .then((res) => this.refreshList());
   };
 
   createItem = () => {
@@ -74,7 +76,7 @@ class App extends Component {
     return this.setState({ viewVerifier: false });
   };
 
-  renderTabList = () => {
+  /*renderTabList = () => {
     return (
         <div className="nav nav-tabs">
         <span
@@ -91,76 +93,77 @@ class App extends Component {
         </span>
         </div>
     );
-  };
+  };*/
 
   renderItems = () => {
-    const { viewVerifier } = this.state;
+    /*const { viewVerifier } = this.state;*/
     const newItems = this.state.verificationList
     // const newItems = this.state.verificationList.filter(
     //     (item) => item.completed === viewVerifier
     // );
 
     return newItems.map((item) => (
-        <li
-            key={item.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
-        >
+      <li
+        key={item.id}
+        className="list-group-item d-flex justify-content-between align-items-center"
+      >
         <span
-            className={`verification-title mr-2 ${
-                this.state.viewVerifier ? "completed-verification" : ""
-            }`}
-            title={item.challenge}
+          className={`verification-title mr-2`}
+          // className={`verification-title mr-2 ${
+          //     this.state.viewVerifier ? "completed-verification" : ""
+          // }`}
+          title={item.challenge}
         >
           {item.phone}
         </span>
-          <span>
+        <span>
           <button
-              className="btn btn-secondary mr-2"
-              onClick={() => this.editItem(item)}
+            className="btn btn-secondary mr-2"
+            onClick={() => this.editItem(item)}
           >
             Edit
           </button>
           <button
-              className="btn btn-danger"
-              onClick={() => this.handleDelete(item)}
+            className="btn btn-danger"
+            onClick={() => this.handleDelete(item)}
           >
             Delete
           </button>
         </span>
-        </li>
+      </li>
     ));
   };
 
   render() {
     return (
-        <main className="container">
-          <h1 className="text-white text-uppercase text-center my-4">Phone Verifications</h1>
-          <div className="row">
-            <div className="col-md-6 col-sm-10 mx-auto p-0">
-              <div className="card p-3">
-                <div className="mb-4">
-                  <button
-                      className="btn btn-primary"
-                      onClick={this.createItem}
-                  >
-                    Add Phone Number
-                  </button>
-                </div>
-                {this.renderTabList()}
-                <ul className="list-group list-group-flush border-top-0">
-                  {this.renderItems()}
-                </ul>
+      <main className="container">
+        <h1 className="text-white text-uppercase text-center my-4">Phone Verifications</h1>
+        <div className="row">
+          <div className="col-md-6 col-sm-10 mx-auto p-0">
+            <div className="card p-3">
+              <div className="mb-4">
+                <button
+                  className="btn btn-primary"
+                  onClick={this.createItem}
+                >
+                  Add Phone Number
+                </button>
               </div>
+              {/*this.renderTabList()*/}
+              <ul className="list-group list-group-flush border-top-0">
+                {this.renderItems()}
+              </ul>
             </div>
           </div>
-          {this.state.modal ? (
-              <Modal
-                  activeItem={this.state.activeItem}
+        </div>
+        {this.state.modal ? (
+          <Modal
+            activeItem={this.state.activeItem}
                   toggle={this.toggle}
-                  onSave={this.handleSubmit}
-              />
-          ) : null}
-        </main>
+            onSave={this.handleSubmit}
+          />
+        ) : null}
+      </main>
     );
   }
 }
