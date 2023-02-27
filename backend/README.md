@@ -58,7 +58,3 @@ Run server:
 ```shell
 python manage.py runserver
 ```
-
-# Front-End
-
-See [Front-End README](frontend/README.md)
