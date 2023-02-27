@@ -40,12 +40,12 @@ export default class CustomModal extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <Label for="verification-title">Phone</Label>
+              <Label for="verification-phone">Phone</Label>
               <Input
                 type="text"
-                id="verification-title"
-                name="title"
-                value={this.state.activeItem.title}
+                id="verification-phone"
+                name="phone"
+                value={this.state.activeItem.phone}
                 onChange={this.handleChange}
                 placeholder="Enter Phone Number"
               />

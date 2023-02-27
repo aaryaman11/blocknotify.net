@@ -4,4 +4,5 @@ from .models import PhoneVerification
 class PhoneVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhoneVerification
-        fields = ('phone', 'challenge')
+        fields = '__all__'
+        # fields = ('id', 'phone', 'challenge')
