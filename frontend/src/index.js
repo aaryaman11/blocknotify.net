@@ -1,8 +1,7 @@
 import React from "react";
 import * as ReactDOMClient from 'react-dom/client';
-// import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.css";
-import "./index.css";
+// import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
@@ -10,8 +9,7 @@ const root = ReactDOMClient.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  // document.getElementById("root",),
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

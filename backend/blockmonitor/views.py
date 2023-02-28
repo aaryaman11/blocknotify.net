@@ -59,7 +59,7 @@ def register(request):
     signature = data['signature']
     public_key = recover_public_key(bytes.fromhex(signature[2:]), phone)
     address = public_key.to_checksum_address()
-    existing_user = User.objects.get(address=address)
+    existing_user = User.objects.filter(address=address).exists()
     if existing_user:
         raise ExistingUserException("This address is already registered!")
     PhoneVerification.objects.create(

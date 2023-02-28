@@ -18,18 +18,6 @@ module.exports = {
     runOnCompile: false,
   },
   networks: {
-    ropsten: {
-      url: `https://ropsten.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`],
-    },
-    kovan: {
-      url: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`],
-    },
-    rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`],
-    },
     goerli: {
       url: `https://goerli.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
       accounts: [`0x${process.env.PRIVATE_KEY}`],
@@ -65,17 +53,6 @@ module.exports = {
       rinkeby: process.env.ETHERSCAN_API_KEY,
       goerli: process.env.ETHERSCAN_API_KEY,
       mainnet: process.env.ETHERSCAN_API_KEY,
-      pxltest: "abc"
-    },
-    customChains: [
-      {
-        network: "pxltest",
-        chainId: 123321,
-        urls: {
-          apiURL: "https://explorer.testnet.pyxelchain.com/api",
-          browserURL: "https://explorer.testnet.pyxelchain.com"
-        }
-      }
-    ]
+    }
   }
 };

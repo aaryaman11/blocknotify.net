@@ -2,7 +2,7 @@
 name = "blocknotify-net"
 version = "0.1.0"
 description = "A notification service that monitors blockchain events."
-authors = ["Nik <nik@pyxis.com>"]
+authors = ["Nik <nik@pyx.is>"]
 readme = "README.md"
 #packages = [{include = "blocknotify"}]
 license = "MIT"
