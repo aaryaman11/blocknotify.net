@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState }  from 'react';
 import ErrorHandler from './ErrorHandler';
 import { ErrorBoundary } from 'react-error-boundary';
 import Footer from './Footer';
@@ -16,8 +17,10 @@ function SignForm() {
     const { addError } = useStatus();
     const { state: chainState } = useChain();
     const [targetAddress, setTargetAddress] = React.useState('');
+    const [validphoneNumber, setValidphoneNumber] = React.useState(false);
     const [signedAddress, setSignedAddress] = React.useState('');
 
+    // this block is signing the user to meta mask
     const sign = () => {
         try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -32,8 +35,20 @@ function SignForm() {
             addError(error);
         }
     };
+   
+    React.useEffect(() => {
+        const phoneRegex = /^\d{10}$/; // Regex for 10 digit phone number
+        if (phoneRegex.test(targetAddress)) {
+            setValidphoneNumber(true);
+          } else {
+            setValidphoneNumber(false);
+          }
+        console.log("hello")
+    },[targetAddress, setTargetAddress]);
+    
 
     if (chainState.connected) {
+        const phoneCodeError = validphoneNumber ? null : <h3>Invalid Number</h3>;
         return (
             <div className="row align-middle">
                 <div className="input-group w-100 mb-1">
@@ -58,6 +73,7 @@ function SignForm() {
                         value={targetAddress}
                         onChange={(e) => setTargetAddress(e.target.value)}
                     />
+                    {phoneCodeError}
                     <button
                         type="button"
                         className="btn btn-primary"
@@ -91,11 +107,12 @@ function SignForm() {
                     />
                 </div>
             </div>
-        );
+        ); 
     } else {
         return <></>;
     }
 }
+React
 
 export default function Register() {
     return (
