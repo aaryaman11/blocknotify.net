@@ -2,7 +2,7 @@
 name = "blocknotify-net"
 version = "0.1.0"
 description = "A notification service that monitors blockchain events."
-authors = ["Nik <nik@pyxis.com>"]
+authors = ["Nik <nik@pyx.is>"]
 readme = "README.md"
 #packages = [{include = "blocknotify"}]
 license = "MIT"
@@ -16,6 +16,10 @@ djangorestframework = "^3.14.0"
 django-cors-headers = "^3.14.0"
 #ninja = "^1.11.1"
 django-ninja = "^0.21.0"
+eth-keys = "^0.4.0"
+eth-hash = "^0.5.1"
+pycryptodome = "^3.17"
+twilio = "^7.16.4"
 
 
 [build-system]

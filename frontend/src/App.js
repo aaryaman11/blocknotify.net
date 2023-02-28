@@ -1,171 +1,95 @@
-import React, { Component } from "react";
-import Modal from "./components/Modal";
-import axios from "axios";
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import DApp from './DApp';
+import Register from './Register';
+// import ComingSoon from './ComingSoon';
+import { Alert, Container, Nav, Navbar } from 'react-bootstrap';
+// import Images from './Images';
+import { ChainProvider } from './ChainContext';
+import { StatusProvider } from './StatusContext';
+import Verify from "./Verify";
+import AutoRoute from "./AutoRoute";
+// import { ContractProvider } from './ContractContext';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewVerifier: false,
-      verificationList: [],
-      modal: false,
-      activeItem: {
-        phone: "",
-        signature: "",
-        completed: false,
-      },
-    };
-  }
-
-  componentDidMount() {
-    this.refreshList();
-  }
-
-  refreshList = () => {
-    axios
-        .get("http://localhost:8000/api/register")
-        .then((res) => this.setState({ verificationList: res.data }))
-        .catch((err) => console.log(err));
-  };
-
-  toggle = () => {
-    this.setState({ modal: !this.state.modal });
-  };
-
-  handleSubmit = (item) => {
-    this.toggle();
-    // TODO: replace this with an actual signature of item.phone from a wallet:
-    const signature = "0xf5d6863ac0db1b3728ed24c514ab6136b828066812dbca4804fe3fbe4bb515bd6376dc621f75c2b45f98482c234a2a802bd9bd0c44ef03c73cf0217377ffc4a91b"
-    item['signature'] = signature;
-    // TODO: remove this once we are receiving real signatures
-    const phone = "30305676789";
-    item['phone'] = phone;
-    if (item.id) {
-      console.log("editing item: %o", item)
-      axios
-          .put(`http://localhost:8000/api/register/${item.id}/`, item)
-          .then((res) => this.refreshList());
-      return;
-    }
-    console.log("creating item: %o", item)
-    axios
-        .post("http://localhost:8000/api/register", item)
-        .then((res) => this.refreshList());
-  };
-
-  handleDelete = (item) => {
-    axios
-        .delete(`/api/register/${item.id}/`)
-        .then((res) => this.refreshList());
-  };
-
-  createItem = () => {
-    const item = { phone: "", signature: "" };
-
-    this.setState({ activeItem: item, modal: !this.state.modal });
-  };
-
-  editItem = (item) => {
-    this.setState({ activeItem: item, modal: !this.state.modal });
-  };
-
-  displayVerifier = (status) => {
-    if (status) {
-      return this.setState({ viewVerifier: true });
-    }
-
-    return this.setState({ viewVerifier: false });
-  };
-
-  renderTabList = () => {
+function Unknown() {
     return (
-        <div className="nav nav-tabs">
-        <span
-            onClick={() => this.displayVerifier(true)}
-            className={this.state.viewVerifier ? "nav-link active" : "nav-link"}
-        >
-          Complete
-        </span>
-          <span
-              onClick={() => this.displayVerifier(false)}
-              className={this.state.viewVerifier ? "nav-link" : "nav-link active"}
-          >
-          Incomplete
-        </span>
-        </div>
+        <>
+            <Alert variant="danger">
+                <Alert.Heading>404 Not Found</Alert.Heading>
+                <span>
+                    The URL you are trying to access does not exist or an error
+                    has occurred.
+                </span>
+                <hr />
+                <pre>
+                    You can head back to our <a href="/">homepage</a>.
+                </pre>
+            </Alert>
+        </>
     );
-  };
+}
 
-  renderItems = () => {
-    const { viewVerifier } = this.state;
-    const newItems = this.state.verificationList
-    // const newItems = this.state.verificationList.filter(
-    //     (item) => item.completed === viewVerifier
-    // );
-
-    return newItems.map((item) => (
-        <li
-            key={item.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
-        >
-        <span
-            className={`verification-title mr-2 ${
-                this.state.viewVerifier ? "completed-verification" : ""
-            }`}
-            title={item.challenge}
-        >
-          {item.phone}
-        </span>
-          <span>
-          <button
-              className="btn btn-secondary mr-2"
-              onClick={() => this.editItem(item)}
-          >
-            Edit
-          </button>
-          <button
-              className="btn btn-danger"
-              onClick={() => this.handleDelete(item)}
-          >
-            Delete
-          </button>
-        </span>
-        </li>
-    ));
-  };
-
-  render() {
+function App() {
     return (
-        <main className="container">
-          <h1 className="text-white text-uppercase text-center my-4">Phone Verifications</h1>
-          <div className="row">
-            <div className="col-md-6 col-sm-10 mx-auto p-0">
-              <div className="card p-3">
-                <div className="mb-4">
-                  <button
-                      className="btn btn-primary"
-                      onClick={this.createItem}
-                  >
-                    Add Phone Number
-                  </button>
-                </div>
-                {this.renderTabList()}
-                <ul className="list-group list-group-flush border-top-0">
-                  {this.renderItems()}
-                </ul>
-              </div>
-            </div>
-          </div>
-          {this.state.modal ? (
-              <Modal
-                  activeItem={this.state.activeItem}
-                  toggle={this.toggle}
-                  onSave={this.handleSubmit}
-              />
-          ) : null}
-        </main>
+        <StatusProvider>
+            <ChainProvider>
+                {/*<ContractProvider>*/}
+                    <Router>
+                        <Navbar bg="dark" expand="lg" variant="dark">
+                            <Container>
+                                <Navbar.Brand href="/" className="">
+                                    <span className="text-light">Block</span>
+                                    <span className="text-primary">
+                                        Notify
+                                    </span>
+                                </Navbar.Brand>
+                                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                                <Navbar.Collapse id="basic-navbar-nav">
+                                    <Nav className="me-auto">
+                                        <Nav.Link
+                                            href="/dapp"
+                                            className="text-light"
+                                        >
+                                            DApp
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            href="/register"
+                                            className="text-light"
+                                        >
+                                            Register
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            href="/verify"
+                                            className="text-light"
+                                        >
+                                            Verify
+                                        </Nav.Link>
+                                    </Nav>
+                                    <Nav>
+                                        <Nav.Link
+                                            href="https://discord.gg/jsBsDbF8Ke"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            Support
+                                        </Nav.Link>
+                                    </Nav>
+                                </Navbar.Collapse>
+                            </Container>
+                        </Navbar>
+                        <Routes>
+                            <Route exact path="/" element={<AutoRoute />} />
+                            <Route exact path="/dapp" element={<DApp />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/verify" element={<Verify />} />
+                            <Route path="/*" element={<Unknown />} />
+                        </Routes>
+                    </Router>
+                {/*</ContractProvider>*/}
+            </ChainProvider>
+        </StatusProvider>
     );
-  }
 }
 
 export default App;

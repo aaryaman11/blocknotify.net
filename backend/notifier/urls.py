@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path, URLPattern, URLResolver
-from rest_framework import routers
-from blockmonitor import views
+from django.urls import include, path  # , URLPattern, URLResolver
 
-router = routers.DefaultRouter()
-router.register(r'phoneVerifications', views.PhoneVerificationView, 'phoneVerification')
+# from rest_framework import routers
+# from blockmonitor import views
+
+# router = routers.DefaultRouter()
+# router.register(r'phoneVerifications', views.PhoneVerificationView, 'phoneVerification')
 
 urlpatterns = [
     path('', include('blockmonitor.urls')),

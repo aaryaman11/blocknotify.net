@@ -50,6 +50,11 @@ module.exports = {
     apiKey: {
       goerli: process.env.ETHERSCAN_API_KEY,
       mainnet: process.env.ETHERSCAN_API_KEY,
+<<<<<<< HEAD
+    }
+  }
+=======
     },
   },
+>>>>>>> master
 };
