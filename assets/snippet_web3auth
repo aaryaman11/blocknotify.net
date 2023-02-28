@@ -1,0 +1,25 @@
+signin = () => {
+    const web3auth = new Web3Auth({
+      clientId: env.WEB3AUTH_CLIENT_ID, 
+      web3AuthNetwork: "cyan",
+      chainConfig: {
+        chainNamespace: "eip155",
+        chainId: "0x1",
+        rpcTarget: "https://rpc.ankr.com/eth",
+        // Avoid using public rpcTarget in production.
+        // Use services like Infura, Quicknode etc
+        displayName: "Ethereum Mainnet",
+        blockExplorer: "https://etherscan.io",
+        ticker: "ETH",
+        tickerName: "Ethereum",
+      },
+    });
+    web3auth.initModal().then(() => {
+      const web3authProvider = web3auth.connect();
+    
+      const provider = new ethers.providers.Web3Provider(web3authProvider); // web3auth.provider
+      provider.gitBlockNumber().then((number) => {
+        console.log("blocknumber =", number);
+      });
+    });
+  }
