@@ -9,6 +9,7 @@ class App extends Component {
     this.state = {
       viewVerifier: false,
       verificationList: [],
+      errors: [],
       registerModal: false,
       verifyModal: false,
       activeItem: {
@@ -23,11 +24,19 @@ class App extends Component {
     this.refreshList();
   }
 
+  addError = (e) => {
+    console.log("e.response.data.errors")
+    console.log(e.response.data.errors)
+    console.log("this.state.errors")
+    console.log(this.state.errors)
+    this.setState({ errors: [...this.state.errors, e.response.data.errors] });
+  };
+
   refreshList = () => {
     axios
         .get("http://localhost:8000/api/register")
         .then((res) => this.setState({ verificationList: res.data }))
-        .catch((err) => console.log(err));
+        .catch((err) => this.addError(err));
   };
 
   registerToggle = () => {
@@ -58,7 +67,15 @@ class App extends Component {
     // console.log("creating item: %o", item)
     axios
         .post("http://localhost:8000/api/register", item)
-        .then((res) => this.refreshList());
+        .then((res) => {
+          console.log("create-response:", res)
+          this.refreshList()
+        })
+        .catch((reason) => {
+          console.log("catch-reason:%o", reason)
+          console.log("errors:", this.state.errors)
+          this.addError(reason)
+        });
   };
 
   handleVerifySubmit = (item) => {
@@ -79,13 +96,15 @@ class App extends Component {
     // console.log("creating item: %o", item)
     axios
         .post("http://localhost:8000/api/verify", item)
-        .then((res) => this.refreshList());
+        .then((res) => this.refreshList())
+        .catch((err) => this.addError(err));
   };
 
   handleDelete = (item) => {
     axios
         .delete(`/api/register/${item.id}/`)
-        .then((res) => this.refreshList());
+        .then((res) => this.refreshList())
+        .catch((err) => this.addError(err));
   };
 
   register = () => {
@@ -177,11 +196,25 @@ class App extends Component {
             <div className="col-md-6 col-sm-10 mx-auto p-0">
               <div className="card p-3">
                 <div className="mb-4">
+                  {/*{this.state.errors}*/}
+                  {this.state.errors && this.state.errors.map((error, index) =>
+                      <tr key={index}>
+                        <td>{error}</td>
+                      </tr>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6 col-sm-10 mx-auto p-0">
+              <div className="card p-3">
+                <div className="mb-4">
                   <button
                       className="btn btn-primary"
                       onClick={this.register}
                   >
-                    Register Phone
+                     Phone
                   </button>
                 </div>
               </div>
