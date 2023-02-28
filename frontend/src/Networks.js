@@ -40,9 +40,10 @@ export const Networks = [
 ];
 
 export function getDefaultChain() {
-    return (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? getFromName('goerli')
-        : getFromName('mainnet');
+    return  getFromName('mainnet');
+    // return (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    //     ? getFromName('goerli')
+    //     : getFromName('mainnet');
 }
 
 export function getNameFromId(id) {

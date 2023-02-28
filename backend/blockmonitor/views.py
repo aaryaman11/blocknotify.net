@@ -2,17 +2,32 @@ import json
 import traceback
 
 from django.http import JsonResponse
-from rest_framework.response import Response
 
+from twilio.rest import Client
 from eth_keys import keys
 from random import randint
 from ninja import NinjaAPI
-from django.shortcuts import render
-from rest_framework import viewsets, status
-# from .serializers import PhoneVerificationSerializer
+
+from notifier.local_settings import TWILIO_AUTH_TOKEN, TWILIO_ACCOUNT_SID
 from .models import PhoneVerification, User
 
 api = NinjaAPI()
+
+
+class InvalidPhoneNumberException(Exception):
+    pass
+
+
+class ExistingUserException(Exception):
+    pass
+
+
+class RegistrationMissingException(Exception):
+    pass
+
+
+class IncorrectChallengeException(Exception):
+    pass
 
 
 @api.exception_handler(Exception)
@@ -51,11 +66,24 @@ def recover_public_key(signature, original_message):
     return recovered_public_key
 
 
+def format_number(pn, country_code="US"):
+    account_sid = TWILIO_ACCOUNT_SID
+    auth_token = TWILIO_AUTH_TOKEN
+    client = Client(account_sid, auth_token)
+    result = client.lookups.v2.phone_numbers(
+        pn).fetch(country_code=country_code)
+    if result.valid:
+        return result.phone_number
+    else:
+        raise InvalidPhoneNumberException(f"Invalid phone number {pn} for country code '{country_code}'")
+
+
 @api.post("/register")
 def register(request):
     data = json.loads(request.body)
     # TODO: remove this, it is here until Aaryaman adds signatures...
     phone = data['fake_phone'] if 'fake_phone' in data else data['phone']
+    phone = format_number(phone)
     signature = data['signature']
     public_key = recover_public_key(bytes.fromhex(signature[2:]), phone)
     address = public_key.to_checksum_address()
@@ -71,18 +99,6 @@ def register(request):
     return {"address": address}
 
 
-class ExistingUserException(Exception):
-    pass
-
-
-class RegistrationMissingException(Exception):
-    pass
-
-
-class IncorrectChallengeException(Exception):
-    pass
-
-
 @api.post("/verify")
 def verify(request):
     data = json.loads(request.body)
@@ -92,7 +108,7 @@ def verify(request):
     address = public_key.to_checksum_address()
     # TODO: add timestamp, before we run this remove all pending registrations up to ?10 min? ago
     verifications = PhoneVerification.objects.filter(address=address)
-    if len(verifications) != 1:  # NOTE: 2+ are not allowed as this field is marked as unique=true, but lets only fall through with 1
+    if len(verifications) != 1:  # NOTE: 2+ are not allowed (unique=true), but let's only fall through with 1
         raise RegistrationMissingException("This address doesn't have any pending verifications (perhaps it expired)!")
     if "123123" != challenge:
         # if verification.challenge != challenge:  # <-- this is correct
@@ -102,7 +118,6 @@ def verify(request):
     new_user = User.objects.create(phone=verifications[0].phone, address=address)
     return {"address": new_user.address}
     # return {"address": address}
-
 
 # class PhoneVerificationView(viewsets.ModelViewSet):
 #     serializer_class = PhoneVerificationSerializer

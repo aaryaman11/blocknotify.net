@@ -9,6 +9,7 @@ import { Alert, Container, Nav, Navbar } from 'react-bootstrap';
 import { ChainProvider } from './ChainContext';
 import { StatusProvider } from './StatusContext';
 import Verify from "./Verify";
+import AutoRoute from "./AutoRoute";
 // import { ContractProvider } from './ContractContext';
 
 function Unknown() {
@@ -78,7 +79,7 @@ function App() {
                             </Container>
                         </Navbar>
                         <Routes>
-                            <Route exact path="/" element={<Register />} />
+                            <Route exact path="/" element={<AutoRoute />} />
                             <Route exact path="/dapp" element={<DApp />} />
                             <Route path="/register" element={<Register />} />
                             <Route path="/verify" element={<Verify />} />

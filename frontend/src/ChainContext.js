@@ -32,13 +32,13 @@ function useChain() {
     }, [state.chainId]);
 
     const correctNetworkSelected = React.useCallback(() => {
-        return true;
-        // const intendedChainId = getDefaultChain().chainId;
-        // const network = getSelectedNetwork();
-        // return (
-        //     network?.chainId &&
-        //     BigNumber.from(intendedChainId).eq(network.chainId)
-        // );
+        // return true;
+        const intendedChainId = getDefaultChain().chainId;
+        const network = getSelectedNetwork();
+        return (
+            network?.chainId &&
+            BigNumber.from(intendedChainId).eq(network.chainId)
+        );
     }, [getSelectedNetwork]);
 
     return {
