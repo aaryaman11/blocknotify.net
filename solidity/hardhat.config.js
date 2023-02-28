@@ -19,12 +19,12 @@ module.exports = {
   },
   networks: {
     goerli: {
-      url: `https://goerli.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      url: process.env.GOERLI_RPC,
       accounts: [`0x${process.env.PRIVATE_KEY}`],
     },
     mainnet: {
-      url: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-      accounts: [`0x${process.env.MAINNET_PRIVATE_KEY}`],
+      url: process.env.MAINNET_RPC,
+      accounts: [`0x${process.env.PRIVATE_KEY}`],
     },
     localhost: {
       url: `http://127.0.0.1:8545`,
@@ -38,21 +38,23 @@ module.exports = {
         // mempool: {
         //     order: "fifo",
         // }
-      }
+      },
     },
   },
   gasReporter: {
-    enabled: true,
+    enabled: false,
     currency: "USD",
     coinmarketcap: `${process.env.CMC_API_KEY}`,
   },
   etherscan: {
     apiKey: {
-      ropsten: process.env.ETHERSCAN_API_KEY,
-      kovan: process.env.ETHERSCAN_API_KEY,
-      rinkeby: process.env.ETHERSCAN_API_KEY,
       goerli: process.env.ETHERSCAN_API_KEY,
       mainnet: process.env.ETHERSCAN_API_KEY,
+<<<<<<< HEAD
     }
   }
+=======
+    },
+  },
+>>>>>>> master
 };
