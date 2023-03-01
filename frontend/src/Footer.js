@@ -23,7 +23,7 @@ export default function Footer() {
             <div className="col">
                 <footer
                     className="d-flex flex-wrap justify-content-between align-items-top py-3 my-4 border-top container">
-                    <p className="col-md-4 mb-0 text-muted">
+                    <p className="col-md-4 mb-0 text-light">
                         © 2023 BlockNotify Founders
                     </p>
                     <a
@@ -48,7 +48,7 @@ export default function Footer() {
                     <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
                         <li className="ms-3">
                             <a
-                                className="text-muted"
+                                className="text-light"
                                 href="https://twitter.com/BlockNotify"
                                 target="_blank"
                                 rel="noreferrer"
@@ -68,7 +68,7 @@ export default function Footer() {
                         </li>
                         <li className="ms-3">
                             <a
-                                className="text-muted"
+                                className="text-light"
                                 href="https://discord.gg/jsBsDbF8Ke"
                                 target="_blank"
                                 rel="noreferrer"

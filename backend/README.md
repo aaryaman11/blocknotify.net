@@ -58,3 +58,16 @@ Run server:
 ```shell
 python manage.py runserver
 ```
+
+
+# To debug on the server:
+
+```shell
+docker-compose run --entrypoint /bin/bash backend
+```
+
+If you make changes to a Dockerfile/image, then you have to rebuild it:
+
+```shell
+docker-compose build backend
+```

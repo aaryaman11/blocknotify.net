@@ -9,7 +9,6 @@ from eth_keys import keys
 from random import randint
 from ninja import NinjaAPI
 
-from notifier.local_settings import TWILIO_AUTH_TOKEN, TWILIO_ACCOUNT_SID, TWILIO_FROM_NUMBER
 from .models import PhoneVerification, User
 
 api = NinjaAPI()
