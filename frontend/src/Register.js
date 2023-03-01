@@ -8,8 +8,6 @@ import {ethers} from 'ethers';
 import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
-import {DropdownButton} from "react-bootstrap";
-import Dropdown from 'react-bootstrap/Dropdown';
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
@@ -122,14 +120,7 @@ export default function Register() {
         <ErrorBoundary FallbackComponent={ErrorHandler}>
             <Header/>
             <div className="container" id="content">
-                <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-                    <Dropdown.Item href="#/action-to">Notify on To</Dropdown.Item>
-                    <Dropdown.Item href="#/action-from">Notify on From</Dropdown.Item>
-                    <Dropdown.Item href="#/action-token-to">Notify on ERC-20 To</Dropdown.Item>
-                    <Dropdown.Item href="#/action-token-from">Notify on ERC-20 From</Dropdown.Item>
-                    <Dropdown.Item href="#/action-nft-to">Notify on ERC-721/ERC-1155 To</Dropdown.Item>
-                    <Dropdown.Item href="#/action-nft-from">Notify on ERC-721/ERC-1155 From</Dropdown.Item>
-                </DropdownButton>
+                <SignForm/>
             </div>
             <Footer/>
             <Messages/>

@@ -67,7 +67,7 @@ function noWalletConnectedView() {
 export default function AutoRoute() {
     // const {addError} = useStatus();
     const {state} = useChain();
-    const [status, setStatus] = React.useState(false);
+    const [status, setStatus] = React.useState("connect");
     const {addAPIError} = useStatus();
 
     React.useEffect(() => {
@@ -88,7 +88,7 @@ export default function AutoRoute() {
         return (<Verify/>)
     } else if (status === "new") {
         return (<Register/>)
-    } else {
+    } else { // connect? + default?
         return noWalletConnectedView();
         // console.log("Not expected!?")
         // return (<Register/>)
