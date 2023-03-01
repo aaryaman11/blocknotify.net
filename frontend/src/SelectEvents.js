@@ -9,7 +9,7 @@ import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
 import {DropdownButton} from "react-bootstrap";
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from "react-bootstrap/Dropdown";
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
@@ -20,23 +20,6 @@ function SignForm() {
     const {state: chainState} = useChain();
     const [phone, setPhone] = React.useState('');
     const [signature, setSignature] = React.useState('');
-
-    React.useEffect(() => {
-        if (signature && signature !== "") {
-            axios
-                .post("http://localhost:8000/api/register", {
-                    "phone": phone, "signature": signature
-                })
-                .then((res) => {
-                    // TODO: now what? we are registered? how do we switch the router from Register to Verify?
-                    addMessage("Success! A code was sent to the phone number.", 'success')
-                    // addMessage(<pre>{JSON.stringify(res, null, 4)}</pre>, 'primary')
-                    // TODO: figure out how to reload the app now... it doesn't auto-redirect them
-                    // ReactDOM.render(<App/>);
-                })
-                .catch((err) => addAPIError(err, 'danger', 20000)); // milliseconds
-        }
-    }, [signature]);
 
     const sign = () => {
         try {
@@ -117,7 +100,7 @@ function SignForm() {
     }
 }
 
-export default function Register() {
+export default function SelectEvents() {
     return (<div className="claim">
         <ErrorBoundary FallbackComponent={ErrorHandler}>
             <Header/>

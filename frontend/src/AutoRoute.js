@@ -11,6 +11,7 @@ import Register from "./Register";
 import {Alert} from "react-bootstrap";
 import axios from "axios";
 import Verify from "./Verify";
+import SelectEvents from "./SelectEvents";
 
 
 function MiddleRow() {
@@ -66,24 +67,30 @@ function noWalletConnectedView() {
 export default function AutoRoute() {
     // const {addError} = useStatus();
     const {state} = useChain();
-    const [pending, setPending] = React.useState(false);
+    const [status, setStatus] = React.useState(false);
     const {addAPIError} = useStatus();
 
     React.useEffect(() => {
         const mainAcct = state.accounts[0]
         if (mainAcct) {
             axios
-                .get("http://localhost:8000/api/pending", {"params": {"address": mainAcct}})
-                .then((res) => setPending(res?.data?.pending))
+                .get("http://localhost:8000/api/status", {"params": {"address": mainAcct}})
+                .then((res) => setStatus(res?.data?.status))
                 .catch(err => addAPIError(err));
         }
     }, [state]);
 
     if (state.accounts.length === 0) {
         return noWalletConnectedView();
-    } else if (pending) {
+    } else if (status === "exists") {
+        return (<SelectEvents/>)
+    } else if (status === "pending") {
         return (<Verify/>)
-    } else {
+    } else if (status === "new") {
         return (<Register/>)
+    } else {
+        return noWalletConnectedView();
+        // console.log("Not expected!?")
+        // return (<Register/>)
     }
 }
