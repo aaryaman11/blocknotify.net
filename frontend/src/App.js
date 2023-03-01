@@ -46,26 +46,26 @@ function App() {
                                 </Navbar.Brand>
                                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                 <Navbar.Collapse id="basic-navbar-nav">
-                                    <Nav className="me-auto">
-                                        <Nav.Link
-                                            href="/dapp"
-                                            className="text-light"
-                                        >
-                                            DApp
-                                        </Nav.Link>
-                                        <Nav.Link
-                                            href="/register"
-                                            className="text-light"
-                                        >
-                                            Register
-                                        </Nav.Link>
-                                        <Nav.Link
-                                            href="/verify"
-                                            className="text-light"
-                                        >
-                                            Verify
-                                        </Nav.Link>
-                                    </Nav>
+                                    {/*<Nav className="me-auto">*/}
+                                    {/*    <Nav.Link*/}
+                                    {/*        href="/dapp"*/}
+                                    {/*        className="text-light"*/}
+                                    {/*    >*/}
+                                    {/*        DApp*/}
+                                    {/*    </Nav.Link>*/}
+                                    {/*    <Nav.Link*/}
+                                    {/*        href="/register"*/}
+                                    {/*        className="text-light"*/}
+                                    {/*    >*/}
+                                    {/*        Register*/}
+                                    {/*    </Nav.Link>*/}
+                                    {/*    <Nav.Link*/}
+                                    {/*        href="/verify"*/}
+                                    {/*        className="text-light"*/}
+                                    {/*    >*/}
+                                    {/*        Verify*/}
+                                    {/*    </Nav.Link>*/}
+                                    {/*</Nav>*/}
                                     <Nav>
                                         <Nav.Link
                                             href="https://discord.gg/jsBsDbF8Ke"
@@ -80,9 +80,9 @@ function App() {
                         </Navbar>
                         <Routes>
                             <Route exact path="/" element={<AutoRoute />} />
-                            <Route exact path="/dapp" element={<DApp />} />
-                            <Route path="/register" element={<Register />} />
-                            <Route path="/verify" element={<Verify />} />
+                            {/*<Route exact path="/dapp" element={<DApp />} />*/}
+                            {/*<Route path="/register" element={<Register />} />*/}
+                            {/*<Route path="/verify" element={<Verify />} />*/}
                             <Route path="/*" element={<Unknown />} />
                         </Routes>
                     </Router>

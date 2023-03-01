@@ -8,6 +8,8 @@ import {ethers} from 'ethers';
 import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
+import {DropdownButton} from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
@@ -16,32 +18,15 @@ function getMessageToSign(message) {
 function SignForm() {
     const {addError, addAPIError, addMessage} = useStatus();
     const {state: chainState} = useChain();
-    const [challenge, setChallenge] = React.useState('');
+    const [phone, setPhone] = React.useState('');
     const [signature, setSignature] = React.useState('');
-
-    React.useEffect(() => {
-        if (signature && signature !== "") {
-            axios
-                .post("http://localhost:8000/api/verify", {
-                    "challenge": challenge, "signature": signature
-                })
-                .then((res) => {
-                    // TODO: now what? we are registered? how do we switch the router from Register to Verify?
-                    addMessage("Success! Phone is now verified.", 'success')
-                    // addMessage(<pre>{JSON.stringify(res, null, 4)}</pre>, 'primary')
-                    // TODO: figure out how to reload the app now... it doesn't auto-redirect them
-                    // ReactDOM.render(<App/>);
-                })
-                .catch((err) => addAPIError(err, 'danger', 20000)); // milliseconds
-        }
-    }, [signature]);
 
     const sign = () => {
         try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
             signer
-                .signMessage(getMessageToSign(challenge))
+                .signMessage(getMessageToSign(phone))
                 .then((signedMessage) => {
                     setSignature(signedMessage);
                 })
@@ -70,11 +55,11 @@ function SignForm() {
                 <input
                     type="text"
                     className="form-control"
-                    placeholder="Challenge Code"
-                    aria-label="Challenge Code"
+                    placeholder="Phone Number"
+                    aria-label="Phone Number"
                     aria-describedby="basic-addon1"
-                    value={challenge}
-                    onChange={(e) => setChallenge(e.target.value)}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                 />
                 <button
                     type="button"
@@ -103,8 +88,8 @@ function SignForm() {
                     type="text"
                     className="form-control"
                     value={signature}
-                    placeholder="Signed message data output"
-                    aria-label="Signed message data output"
+                    placeholder="Signed Phone Number"
+                    aria-label="Signed Phone Number"
                     aria-describedby="basic-addon2"
                     readOnly={true}
                 />
@@ -115,12 +100,19 @@ function SignForm() {
     }
 }
 
-export default function Verify() {
+export default function SelectEvents() {
     return (<div className="claim">
         <ErrorBoundary FallbackComponent={ErrorHandler}>
             <Header/>
             <div className="container" id="content">
-                <SignForm/>
+                <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                    <Dropdown.Item href="#/action-to">Notify on To</Dropdown.Item>
+                    <Dropdown.Item href="#/action-from">Notify on From</Dropdown.Item>
+                    <Dropdown.Item href="#/action-token-to">Notify on ERC-20 To</Dropdown.Item>
+                    <Dropdown.Item href="#/action-token-from">Notify on ERC-20 From</Dropdown.Item>
+                    <Dropdown.Item href="#/action-nft-to">Notify on ERC-721/ERC-1155 To</Dropdown.Item>
+                    <Dropdown.Item href="#/action-nft-from">Notify on ERC-721/ERC-1155 From</Dropdown.Item>
+                </DropdownButton>
             </div>
             <Footer/>
             <Messages/>
