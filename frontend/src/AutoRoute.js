@@ -70,6 +70,7 @@ export default function AutoRoute() {
     const [status, setStatus] = React.useState("connect");
     const {addAPIError} = useStatus();
 
+
     React.useEffect(() => {
         const mainAcct = state.accounts[0]
         if (mainAcct) {
@@ -85,9 +86,9 @@ export default function AutoRoute() {
     } else if (status === "exists") {
         return (<SelectEvents/>)
     } else if (status === "pending") {
-        return (<Verify/>)
+        return (<Verify onReload={setStatus}/>)
     } else if (status === "new") {
-        return (<Register/>)
+        return (<Register onReload={setStatus}/>)
     } else { // connect? + default?
         return noWalletConnectedView();
         // console.log("Not expected!?")
