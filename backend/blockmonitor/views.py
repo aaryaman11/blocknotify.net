@@ -22,6 +22,10 @@ class ExistingUserException(Exception):
     pass
 
 
+class ExistingVerificationException(Exception):
+    pass
+
+
 class RegistrationMissingException(Exception):
     pass
 
@@ -82,7 +86,9 @@ def format_number(pn, country_code="US"):
 def register(request):
     data = json.loads(request.body)
     # TODO: remove this, it is here until Aaryaman adds signatures...
-    phone = data['fake_phone'] if 'fake_phone' in data else data['phone']
+    phone = data['phone']
+    # phone = data['fake_phone'] if 'fake_phone' in data else data['phone']
+    # import ipdb; ipdb.set_trace()
     phone = format_number(phone)
     signature = data['signature']
     public_key = recover_public_key(bytes.fromhex(signature[2:]), phone)
@@ -90,6 +96,10 @@ def register(request):
     existing_user = User.objects.filter(address=address).exists()
     if existing_user:
         raise ExistingUserException("This address is already registered!")
+    existing_verification = PhoneVerification.objects.filter(address=address).exists()
+    if existing_verification:
+        # TODO: add check here that if records are old than 10 minutes, then delete them
+        raise ExistingVerificationException("There is already a pending verification for this address!")
     PhoneVerification.objects.create(
         phone=data['phone'],
         # NOTE: add the phone we wanted to set here, the fake_number is the number of the signature and is just used to get the address
@@ -111,13 +121,21 @@ def verify(request):
     if len(verifications) != 1:  # NOTE: 2+ are not allowed (unique=true), but let's only fall through with 1
         raise RegistrationMissingException("This address doesn't have any pending verifications (perhaps it expired)!")
     if "123123" != challenge:
-        # if verification.challenge != challenge:  # <-- this is correct
+        # if verifications[0].challenge != challenge:  # <-- this is correct
         raise IncorrectChallengeException("The challenge code for this address does not match!")
     # Now we're good, right?
     verifications[0].delete()
     new_user = User.objects.create(phone=verifications[0].phone, address=address)
     return {"address": new_user.address}
     # return {"address": address}
+
+
+@api.get("/pending")
+def pending(request):
+    data = request.GET
+    # data = json.loads(request.body)
+    verifications = PhoneVerification.objects.filter(address__iexact=data['address'])
+    return {"pending": verifications.exists()}
 
 # class PhoneVerificationView(viewsets.ModelViewSet):
 #     serializer_class = PhoneVerificationSerializer

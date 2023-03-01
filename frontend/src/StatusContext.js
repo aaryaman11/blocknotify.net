@@ -31,6 +31,21 @@ function useStatus() {
     const remove = (uuid) => dispatch({ type: statusActions.remove, uuid });
     const addMessage = (message, color, timeout) =>
         dispatch({ type: statusActions.addMessage, message, color, timeout });
+    const addAPIError = (error, color, timeout) => {
+        color = color ?? 'danger';
+        let printWholeError = true;
+        if ('response' in error) {
+            const errors = error.response?.data?.errors
+            if (errors && errors.length > 0) {
+                printWholeError = false;
+                errors.forEach(e => addMessage(e, color, timeout));
+            }
+        }
+        if (printWholeError) {
+            // addMessage(error, color);
+            // addError(error, color)
+        }
+    }
     const addError = (error, color) => {
         color = color ?? 'danger';
         const title = error.reason;
@@ -88,7 +103,8 @@ function useStatus() {
         remove,
         addMessage,
         addContractError,
-        addError
+        addError,
+        addAPIError
     };
 }
 

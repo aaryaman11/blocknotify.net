@@ -60,7 +60,7 @@ cover/
 backend/notifier/local_settings.py
 db.sqlite3
 db.sqlite3-journal
-*/migrations/00*.py
+**/migrations/00*.py
 
 # Flask stuff:
 instance/
