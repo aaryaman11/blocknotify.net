@@ -1,5 +1,4 @@
-
-import React, { useState }  from 'react';
+import React from 'react';
 import ErrorHandler from './ErrorHandler';
 import {ErrorBoundary} from 'react-error-boundary';
 import Footer from './Footer';
@@ -9,6 +8,8 @@ import {ethers} from 'ethers';
 import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
+import {DropdownButton} from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
@@ -19,26 +20,7 @@ function SignForm() {
     const {state: chainState} = useChain();
     const [phone, setPhone] = React.useState('');
     const [signature, setSignature] = React.useState('');
-    const [validphoneNumber, setValidphoneNumber] = React.useState(false);
 
-    React.useEffect(() => {
-        if (signature && signature !== "") {
-            axios
-                .post("http://localhost:8000/api/register", {
-                    "phone": phone, "signature": signature
-                })
-                .then((res) => {
-                    // TODO: now what? we are registered? how do we switch the router from Register to Verify?
-                    addMessage("Success! A code was sent to the phone number.", 'success')
-                    // addMessage(<pre>{JSON.stringify(res, null, 4)}</pre>, 'primary')
-                    // TODO: figure out how to reload the app now... it doesn't auto-redirect them
-                    // ReactDOM.render(<App/>);
-                })
-                .catch((err) => addAPIError(err, 'danger', 20000)); // milliseconds
-        }
-    }, [signature]);
-
-    // this block is signing the user to meta mask
     const sign = () => {
         try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -53,20 +35,8 @@ function SignForm() {
             addError(error);
         }
     };
-   
-    React.useEffect(() => {
-        const phoneRegex = /^\d{10}$/; // Regex for 10 digit phone number
-        if (phoneRegex.test(phone)) {
-            setValidphoneNumber(true);
-          } else {
-            setValidphoneNumber(false);
-          }
-        console.log("hello")
-    },[phone, setPhone]);
-    
 
     if (chainState.connected) {
-        const phoneCodeError = validphoneNumber ? null : <h3>Invalid Number</h3>;
         return (<div className="row align-middle">
             <div className="input-group w-100 mb-1">
                     <span className="input-group-text" id="basic-addon1">
@@ -91,7 +61,6 @@ function SignForm() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 />
-                {phoneCodeError}
                 <button
                     type="button"
                     className="btn btn-primary"
@@ -130,14 +99,20 @@ function SignForm() {
         return <></>;
     }
 }
-React
 
-export default function Register() {
+export default function SelectEvents() {
     return (<div className="claim">
         <ErrorBoundary FallbackComponent={ErrorHandler}>
             <Header/>
             <div className="container" id="content">
-                <SignForm/>
+                <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                    <Dropdown.Item href="#/action-to">Notify on To</Dropdown.Item>
+                    <Dropdown.Item href="#/action-from">Notify on From</Dropdown.Item>
+                    <Dropdown.Item href="#/action-token-to">Notify on ERC-20 To</Dropdown.Item>
+                    <Dropdown.Item href="#/action-token-from">Notify on ERC-20 From</Dropdown.Item>
+                    <Dropdown.Item href="#/action-nft-to">Notify on ERC-721/ERC-1155 To</Dropdown.Item>
+                    <Dropdown.Item href="#/action-nft-from">Notify on ERC-721/ERC-1155 From</Dropdown.Item>
+                </DropdownButton>
             </div>
             <Footer/>
             <Messages/>

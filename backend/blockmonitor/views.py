@@ -3,12 +3,13 @@ import traceback
 
 from django.http import JsonResponse
 
+import os
 from twilio.rest import Client
 from eth_keys import keys
 from random import randint
 from ninja import NinjaAPI
 
-from notifier.local_settings import TWILIO_AUTH_TOKEN, TWILIO_ACCOUNT_SID
+from notifier.local_settings import TWILIO_AUTH_TOKEN, TWILIO_ACCOUNT_SID, TWILIO_FROM_NUMBER
 from .models import PhoneVerification, User
 
 api = NinjaAPI()
@@ -19,6 +20,10 @@ class InvalidPhoneNumberException(Exception):
 
 
 class ExistingUserException(Exception):
+    pass
+
+
+class ExistingVerificationException(Exception):
     pass
 
 
@@ -82,7 +87,9 @@ def format_number(pn, country_code="US"):
 def register(request):
     data = json.loads(request.body)
     # TODO: remove this, it is here until Aaryaman adds signatures...
-    phone = data['fake_phone'] if 'fake_phone' in data else data['phone']
+    phone = data['phone']
+    # phone = data['fake_phone'] if 'fake_phone' in data else data['phone']
+    # import ipdb; ipdb.set_trace()
     phone = format_number(phone)
     signature = data['signature']
     public_key = recover_public_key(bytes.fromhex(signature[2:]), phone)
@@ -90,11 +97,26 @@ def register(request):
     existing_user = User.objects.filter(address=address).exists()
     if existing_user:
         raise ExistingUserException("This address is already registered!")
+    existing_verification = PhoneVerification.objects.filter(address=address).exists()
+    if existing_verification:
+        # TODO: add check here that if records are old than 10 minutes, then delete them
+        raise ExistingVerificationException("There is already a pending verification for this address!")
+    challenge = random_with_N_digits(6)
     PhoneVerification.objects.create(
         phone=data['phone'],
         # NOTE: add the phone we wanted to set here, the fake_number is the number of the signature and is just used to get the address
         address=address,
-        challenge=f"{random_with_N_digits(6)}"
+        challenge=f"{challenge}"
+    )
+    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    # TODO: we could log the message, it probably has good debug data...
+    # message = client.messages
+    client.messages \
+        .create(
+        body=f'BlockNotify security code: {challenge}',
+        from_=TWILIO_FROM_NUMBER,  # our service number
+        # status_callback='http://postb.in/1234abcd',
+        to=f'{phone}'
     )
     return {"address": address}
 
@@ -110,8 +132,8 @@ def verify(request):
     verifications = PhoneVerification.objects.filter(address=address)
     if len(verifications) != 1:  # NOTE: 2+ are not allowed (unique=true), but let's only fall through with 1
         raise RegistrationMissingException("This address doesn't have any pending verifications (perhaps it expired)!")
-    if "123123" != challenge:
-        # if verification.challenge != challenge:  # <-- this is correct
+    # if "123123" != challenge:
+    if verifications[0].challenge != challenge:  # <-- this is correct
         raise IncorrectChallengeException("The challenge code for this address does not match!")
     # Now we're good, right?
     verifications[0].delete()
@@ -119,6 +141,24 @@ def verify(request):
     return {"address": new_user.address}
     # return {"address": address}
 
+
+@api.get("/status")
+def status(request):
+    data = request.GET
+    # data = json.loads(request.body)
+    verifications = PhoneVerification.objects.filter(address__iexact=data['address'])
+    users = User.objects.filter(address__iexact=data['address'])
+    is_new = "exists" if users.exists() else "new"
+    status = "pending" if verifications.exists() else is_new
+    return {"status": status}
+#
+#
+# @api.get("/is_user")
+# def is_user(request):
+#     data = request.GET
+#     # data = json.loads(request.body)
+#     return {"exists": users.exists()}
+#
 # class PhoneVerificationView(viewsets.ModelViewSet):
 #     serializer_class = PhoneVerificationSerializer
 #     queryset = PhoneVerification.objects.all()
