@@ -2,12 +2,30 @@ version: '3.7'
 
 services:
 
-  blocknotify:
-    container_name: blocknotify
-    build: .
+  frontend:
+    container_name: bn-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - '3000:80'
     environment:
       - VIRTUAL_HOST=blocknotify.net
+      - VIRTUAL_PATH=/
       - LETSENCRYPT_HOST=blocknotify.net
+      - LETSENCRYPT_EMAIL=admin@blocknotify.net
+    restart: always
+
+  backend:
+    container_name: bn-backend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - '8000:80'
+    environment:
+      - VIRTUAL_HOST=api.blocknotify.net
+      - LETSENCRYPT_HOST=api.blocknotify.net
       - LETSENCRYPT_EMAIL=admin@blocknotify.net
     restart: always
 
