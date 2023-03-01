@@ -13,7 +13,7 @@ function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
 }
 
-function SignForm() {
+function SignForm(props) {
     const {addError, addAPIError, addMessage} = useStatus();
     const {state: chainState} = useChain();
     const [challenge, setChallenge] = React.useState('');
@@ -28,6 +28,7 @@ function SignForm() {
                 .then((res) => {
                     // TODO: now what? we are registered? how do we switch the router from Register to Verify?
                     addMessage("Success! Phone is now verified.", 'success')
+                    props.onReload("exists")
                     // addMessage(<pre>{JSON.stringify(res, null, 4)}</pre>, 'primary')
                     // TODO: figure out how to reload the app now... it doesn't auto-redirect them
                     // ReactDOM.render(<App/>);
@@ -115,12 +116,12 @@ function SignForm() {
     }
 }
 
-export default function Verify() {
+export default function Verify(props) {
     return (<div className="claim">
         <ErrorBoundary FallbackComponent={ErrorHandler}>
             <Header/>
             <div className="container" id="content">
-                <SignForm/>
+                <SignForm onReload={props.onReload}/>
             </div>
             <Footer/>
             <Messages/>

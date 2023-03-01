@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState }  from 'react';
 import ErrorHandler from './ErrorHandler';
 import {ErrorBoundary} from 'react-error-boundary';
 import Footer from './Footer';
@@ -8,16 +9,18 @@ import {ethers} from 'ethers';
 import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
+import Form from 'react-bootstrap/Form';
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
 }
 
-function SignForm() {
+function SignForm(props) {
     const {addError, addAPIError, addMessage} = useStatus();
     const {state: chainState} = useChain();
     const [phone, setPhone] = React.useState('');
     const [signature, setSignature] = React.useState('');
+    const [validphoneNumber, setValidphoneNumber] = React.useState(false);
 
     React.useEffect(() => {
         if (signature && signature !== "") {
@@ -28,6 +31,7 @@ function SignForm() {
                 .then((res) => {
                     // TODO: now what? we are registered? how do we switch the router from Register to Verify?
                     addMessage("Success! A code was sent to the phone number.", 'success')
+                    props.onReload("pending")
                     // addMessage(<pre>{JSON.stringify(res, null, 4)}</pre>, 'primary')
                     // TODO: figure out how to reload the app now... it doesn't auto-redirect them
                     // ReactDOM.render(<App/>);
@@ -36,6 +40,7 @@ function SignForm() {
         }
     }, [signature]);
 
+    // this block is signing the user to meta mask
     const sign = () => {
         try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -50,8 +55,19 @@ function SignForm() {
             addError(error);
         }
     };
+   
+    React.useEffect(() => {
+        const phoneRegex = /^\d{10}$/; // Regex for 10 digit phone number
+        if (phoneRegex.test(phone)) {
+            setValidphoneNumber(true);
+          } else {
+            setValidphoneNumber(false);
+          }
+    },[phone, setPhone]);
+    
 
     if (chainState.connected) {
+        const phoneCodeError = validphoneNumber ? null : <h3>Invalid Number</h3>;
         return (<div className="row align-middle">
             <div className="input-group w-100 mb-1">
                     <span className="input-group-text" id="basic-addon1">
@@ -67,6 +83,7 @@ function SignForm() {
                                 d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"></path>
                         </svg>
                     </span>
+                
                 <input
                     type="text"
                     className="form-control"
@@ -76,6 +93,8 @@ function SignForm() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 />
+               
+                {phoneCodeError}
                 <button
                     type="button"
                     className="btn btn-primary"
@@ -114,13 +133,14 @@ function SignForm() {
         return <></>;
     }
 }
+React
 
-export default function Register() {
+export default function Register(props) {
     return (<div className="claim">
         <ErrorBoundary FallbackComponent={ErrorHandler}>
             <Header/>
             <div className="container" id="content">
-                <SignForm/>
+                <SignForm onReload={props.onReload}/>
             </div>
             <Footer/>
             <Messages/>

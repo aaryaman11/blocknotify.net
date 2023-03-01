@@ -9,6 +9,10 @@
   "extends": "eslint:recommended",
   "rules": {
     // enable additional rules
+    // "indent": [
+    //   "error",
+    //   4
+    // ],
     //"indent": [
     //  "error",
     //  4
