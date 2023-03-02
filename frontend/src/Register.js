@@ -9,9 +9,11 @@ import {ethers} from 'ethers';
 import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
+import env from "react-dotenv";
 import intlTelInput from "intl-tel-input";
 
 
+import {Button, Input} from "reactstrap";
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
@@ -22,14 +24,14 @@ function SignForm(props) {
     const {state: chainState} = useChain();
     const [phone, setPhone] = React.useState('');
     const [signature, setSignature] = React.useState('');
-    const [validphoneNumber, setValidphoneNumber] = React.useState(false);
+    const [validPhoneNumber, setValidPhoneNumber] = React.useState(false);
     const [phoneInput, setPhoneInput] = React.useState(null);
     const phoneInputRef = React.useRef(null);
 
     React.useEffect(() => {
         if (signature && signature !== "") {
             axios
-                .post("http://localhost:8000/api/register", {
+                .post(`${env.BACKEND_URL}/api/register`, {
                     "phone": phone, "signature": signature
                 })
                 .then((res) => {
@@ -61,11 +63,11 @@ function SignForm(props) {
     };
    
     React.useEffect(() => {
-        const phoneRegex = /^\d{10}$/; // Regex for 10 digit phone number
+        const phoneRegex = /^\+[1-9]\d{1,14}$/; //  /^\d{10}$/; // Regex for 10 digit phone number
         if (phoneRegex.test(phone)) {
-            setValidphoneNumber(true);
+            setValidPhoneNumber(true);
           } else {
-            setValidphoneNumber(false);
+            setValidPhoneNumber(false);
           }
     },[phone, setPhone]);
     React.useEffect(() => {
@@ -80,9 +82,9 @@ function SignForm(props) {
     
 
     if (chainState.connected) {
-        const phoneCodeError = validphoneNumber ? null : <h3>Invalid Number</h3>;
         return (<div className="row align-middle">
             <div className="input-group w-100 mb-1">
+                <Form>
                     <span className="input-group-text" id="basic-addon1">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -96,27 +98,40 @@ function SignForm(props) {
                                 d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"></path>
                         </svg>
                     </span>
-                
-                <input
-                    type="tel"
+                    <Input
+                        type="tel"
                     ref={phoneInputRef}
                     id = "phone"
-                    className="form-control"
-                    placeholder="Phone Number"
-                    aria-label="Phone Number"
-                    aria-describedby="basic-addon1"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                />
-                
-                {phoneCodeError}
-                <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={sign}
-                >
-                    Sign
-                </button>
+                        className="form-control"
+                        placeholder="Phone Number"
+                        aria-label="Phone Number"
+                        aria-describedby="basic-addon1"
+                        value={phone}
+                        invalid={!validPhoneNumber}
+                        onChange={(e) => setPhone(e.target.value)}
+                    />
+                     <Button
+                        className="btn btn-primary"
+                        onClick={sign}
+                    >Sign</Button>
+                </Form>
+                {/*<input*/}
+                {/*    type="text"*/}
+                {/*    className="form-control"*/}
+                {/*    placeholder="Phone Number"*/}
+                {/*    aria-label="Phone Number"*/}
+                {/*    aria-describedby="basic-addon1"*/}
+                {/*    value={phone}*/}
+                {/*    onChange={(e) => setPhone(e.target.value)}*/}
+                {/*/>*/}
+                {/*{phoneCodeError}*/}
+                {/*<button*/}
+                {/*    type="button"*/}
+                {/*    className="btn btn-primary"*/}
+                {/*    onClick={sign}*/}
+                {/*>*/}
+                {/*    Sign*/}
+                {/*</button>*/}
             </div>
             <div className="input-group w-100 mb-1">
                     <span className="input-group-text" id="basic-addon2">
@@ -148,7 +163,6 @@ function SignForm(props) {
         return <></>;
     }
 }
-React
 
 export default function Register(props) {
     return (<div className="claim">

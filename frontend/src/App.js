@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import DApp from './DApp';
-import Register from './Register';
+// import DApp from './DApp';
+// import Register from './Register';
 // import ComingSoon from './ComingSoon';
 import { Alert, Container, Nav, Navbar } from 'react-bootstrap';
 // import Images from './Images';

@@ -9,7 +9,7 @@ from eth_keys import keys
 from random import randint
 from ninja import NinjaAPI
 
-from notifier.local_settings import TWILIO_AUTH_TOKEN, TWILIO_ACCOUNT_SID, TWILIO_FROM_NUMBER
+from notifier.settings import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER
 from .models import PhoneVerification, User
 
 api = NinjaAPI()
@@ -86,13 +86,12 @@ def format_number(pn, country_code="US"):
 @api.post("/register")
 def register(request):
     data = json.loads(request.body)
-    # TODO: remove this, it is here until Aaryaman adds signatures...
-    phone = data['phone']
-    # phone = data['fake_phone'] if 'fake_phone' in data else data['phone']
-    # import ipdb; ipdb.set_trace()
-    phone = format_number(phone)
+    raw_phone = data['phone']
+    sanitized_phone = format_number(raw_phone)
+    # if sanitized_phone != raw_phone:
+    #     raise InvalidPhoneNumberException(f"The number {raw_phone} was sanitized to: {sanitized_phone}")
     signature = data['signature']
-    public_key = recover_public_key(bytes.fromhex(signature[2:]), phone)
+    public_key = recover_public_key(bytes.fromhex(signature[2:]), raw_phone)
     address = public_key.to_checksum_address()
     existing_user = User.objects.filter(address=address).exists()
     if existing_user:
@@ -103,8 +102,7 @@ def register(request):
         raise ExistingVerificationException("There is already a pending verification for this address!")
     challenge = random_with_N_digits(6)
     PhoneVerification.objects.create(
-        phone=data['phone'],
-        # NOTE: add the phone we wanted to set here, the fake_number is the number of the signature and is just used to get the address
+        phone=sanitized_phone,
         address=address,
         challenge=f"{challenge}"
     )
@@ -116,7 +114,7 @@ def register(request):
         body=f'BlockNotify security code: {challenge}',
         from_=TWILIO_FROM_NUMBER,  # our service number
         # status_callback='http://postb.in/1234abcd',
-        to=f'{phone}'
+        to=f'{sanitized_phone}'
     )
     return {"address": address}
 
