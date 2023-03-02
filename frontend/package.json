@@ -46,6 +46,8 @@
     ]
   },
   "react-dotenv": {
-    "whitelist": ["BACKEND_URL"]
+    "whitelist": [
+      "BACKEND_URL"
+    ]
   }
 }
