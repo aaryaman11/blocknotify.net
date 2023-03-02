@@ -9,7 +9,9 @@ import {ethers} from 'ethers';
 import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
-import Form from 'react-bootstrap/Form';
+import intlTelInput from "intl-tel-input";
+
+
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
@@ -21,6 +23,8 @@ function SignForm(props) {
     const [phone, setPhone] = React.useState('');
     const [signature, setSignature] = React.useState('');
     const [validphoneNumber, setValidphoneNumber] = React.useState(false);
+    const [phoneInput, setPhoneInput] = React.useState(null);
+    const phoneInputRef = React.useRef(null);
 
     React.useEffect(() => {
         if (signature && signature !== "") {
@@ -64,6 +68,15 @@ function SignForm(props) {
             setValidphoneNumber(false);
           }
     },[phone, setPhone]);
+    React.useEffect(() => {
+        const phoneInput = intlTelInput(phoneInputRef.current, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+        return () => {
+        phoneInput.destroy();
+        };
+    }, [])
     
 
     if (chainState.connected) {
@@ -85,7 +98,9 @@ function SignForm(props) {
                     </span>
                 
                 <input
-                    type="text"
+                    type="tel"
+                    ref={phoneInputRef}
+                    id = "phone"
                     className="form-control"
                     placeholder="Phone Number"
                     aria-label="Phone Number"
@@ -93,7 +108,7 @@ function SignForm(props) {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 />
-               
+                
                 {phoneCodeError}
                 <button
                     type="button"
