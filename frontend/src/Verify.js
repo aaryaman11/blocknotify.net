@@ -22,7 +22,7 @@ function SignForm(props) {
     React.useEffect(() => {
         if (signature && signature !== "") {
             axios
-                .post("http://localhost:8000/api/verify", {
+                .post(`${env.BACKEND_URL}/api/verify`, {
                     "challenge": challenge, "signature": signature
                 })
                 .then((res) => {

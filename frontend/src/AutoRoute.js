@@ -75,7 +75,7 @@ export default function AutoRoute() {
         const mainAcct = state.accounts[0]
         if (mainAcct) {
             axios
-                .get("http://localhost:8000/api/status", {"params": {"address": mainAcct}})
+                .get(`${env.BACKEND_URL}/api/status`, {"params": {"address": mainAcct}})
                 .then((res) => setStatus(res?.data?.status))
                 .catch(err => addAPIError(err));
         }
