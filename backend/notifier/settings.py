@@ -132,8 +132,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://blocknotify.net'
 ]
+
+TWILIO_FROM_NUMBER = '+18888888888'
+TWILIO_AUTH_TOKEN = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+TWILIO_ACCOUNT_SID = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
 try:
     from notifier.local_settings import *
