@@ -49,13 +49,7 @@ def json_exception_handler(request, exception):
     return response
 
 
-# TODO: Remove this for production
-@api.get("/register")
-def get_pending_registrations(request):
-    return [{"id": ver.id, "phone": ver.phone, "challenge": ver.challenge} for ver in PhoneVerification.objects.all()]
-
-
-def random_with_N_digits(n):
+def random_with_n_digits(n):
     range_start = 10 ** (n - 1)
     range_end = (10 ** n) - 1
     return randint(range_start, range_end)
@@ -100,7 +94,7 @@ def register(request):
     if existing_verification:
         # TODO: add check here that if records are old than 10 minutes, then delete them
         raise ExistingVerificationException("There is already a pending verification for this address!")
-    challenge = random_with_N_digits(6)
+    challenge = random_with_n_digits(6)
     PhoneVerification.objects.create(
         phone=sanitized_phone,
         address=address,
