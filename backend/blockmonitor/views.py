@@ -49,13 +49,7 @@ def json_exception_handler(request, exception):
     return response
 
 
-# TODO: Remove this for production
-@api.get("/register")
-def get_pending_registrations(request):
-    return [{"id": ver.id, "phone": ver.phone, "challenge": ver.challenge} for ver in PhoneVerification.objects.all()]
-
-
-def random_with_N_digits(n):
+def random_with_n_digits(n):
     range_start = 10 ** (n - 1)
     range_end = (10 ** n) - 1
     return randint(range_start, range_end)
@@ -100,7 +94,7 @@ def register(request):
     if existing_verification:
         # TODO: add check here that if records are old than 10 minutes, then delete them
         raise ExistingVerificationException("There is already a pending verification for this address!")
-    challenge = random_with_N_digits(6)
+    challenge = random_with_n_digits(6)
     PhoneVerification.objects.create(
         phone=sanitized_phone,
         address=address,
@@ -149,29 +143,3 @@ def status(request):
     is_new = "exists" if users.exists() else "new"
     status = "pending" if verifications.exists() else is_new
     return {"status": status}
-#
-#
-# @api.get("/is_user")
-# def is_user(request):
-#     data = request.GET
-#     # data = json.loads(request.body)
-#     return {"exists": users.exists()}
-#
-# class PhoneVerificationView(viewsets.ModelViewSet):
-#     serializer_class = PhoneVerificationSerializer
-#     queryset = PhoneVerification.objects.all()
-#
-#     def create(self, request):
-#         assets = []
-#         farming_details = {}
-#         # Set your serializer
-#         data = json.loads(request.body.decode('utf-8'))
-#         # print("data:", data)
-#         serializer = PhoneVerificationSerializer(data=request.data)
-#         if serializer.is_valid():  # MAGIC HAPPENS HERE
-#             # ... Here you do the routine you do when the data is valid
-#             # You can use the serializer as an object of you Assets Model
-#             # Save it
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
