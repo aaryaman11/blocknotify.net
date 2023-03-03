@@ -143,29 +143,3 @@ def status(request):
     is_new = "exists" if users.exists() else "new"
     status = "pending" if verifications.exists() else is_new
     return {"status": status}
-#
-#
-# @api.get("/is_user")
-# def is_user(request):
-#     data = request.GET
-#     # data = json.loads(request.body)
-#     return {"exists": users.exists()}
-#
-# class PhoneVerificationView(viewsets.ModelViewSet):
-#     serializer_class = PhoneVerificationSerializer
-#     queryset = PhoneVerification.objects.all()
-#
-#     def create(self, request):
-#         assets = []
-#         farming_details = {}
-#         # Set your serializer
-#         data = json.loads(request.body.decode('utf-8'))
-#         # print("data:", data)
-#         serializer = PhoneVerificationSerializer(data=request.data)
-#         if serializer.is_valid():  # MAGIC HAPPENS HERE
-#             # ... Here you do the routine you do when the data is valid
-#             # You can use the serializer as an object of you Assets Model
-#             # Save it
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
