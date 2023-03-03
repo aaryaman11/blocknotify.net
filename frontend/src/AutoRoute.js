@@ -12,6 +12,7 @@ import {Alert} from "react-bootstrap";
 import axios from "axios";
 import Verify from "./Verify";
 import SelectEvents from "./SelectEvents";
+import env from "react-dotenv";
 
 
 function MiddleRow() {
