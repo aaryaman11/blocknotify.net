@@ -114,7 +114,7 @@ function SignForm(props) {
                     />
                     
                      <Button
-                        //type="submit"
+                        type="submit"
                         className="btn btn-primary"
                         onClick={sign}
                     >Sign</Button>
