@@ -8,6 +8,7 @@ import {ethers} from 'ethers';
 import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
+import env from "react-dotenv";
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');

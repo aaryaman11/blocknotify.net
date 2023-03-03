@@ -18,7 +18,7 @@ services:
     container_name: bn-backend
     build: ./backend
     ports:
-      - '8000:80'
+      - '8000:8000'
     environment:
       - VIRTUAL_HOST=api.blocknotify.net
       - LETSENCRYPT_HOST=api.blocknotify.net

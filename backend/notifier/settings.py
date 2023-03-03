@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-q@a!@z91j=s%^1)i2j!y#s51wl4(s7(94lo^fr^1-*@mwq5+z6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['blocknotify.net', 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://blocknotify.net']
+ALLOWED_HOSTS = ['api.blocknotify.net', 'blocknotify.net', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://blocknotify.net', 'https://api.blocknotify.net']
 
 
 # Application definition
