@@ -63,14 +63,14 @@ function SignForm(props) {
         }
     };
    
-    // React.useEffect(() => {
-    //     const phoneRegex = /^\+[1-9]\d{1,14}$/; //  /^\d{10}$/; // Regex for 10 digit phone number
-    //     if (phoneRegex.test(phone)) {
-    //         setValidPhoneNumber(true);
-    //       } else {
-    //         setValidPhoneNumber(false);
-    //       }
-    // },[phone, setPhone]);
+    React.useEffect(() => {
+        const phoneRegex = /^\+[1-9]\d{1,14}$/; //  /^\d{10}$/; // Regex for 10 digit phone number
+        if (phoneRegex.test(phone)) {
+            setValidPhoneNumber(true);
+          } else {
+            setValidPhoneNumber(false);
+          }
+    },[phone, setPhone]);
     // React.useEffect(() => {
     //     const phoneInput = intlTelInput(phoneInputRef.current, {
     //     utilsScript:
