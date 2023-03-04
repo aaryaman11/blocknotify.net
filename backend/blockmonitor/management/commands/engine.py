@@ -116,7 +116,7 @@ class Command(BaseCommand):
                         to=f'{this_from.phone}'
                     )
                     # raise Exception("sent-from")
-                matching_to = User.objects.filter(address=to_address)
+                matching_to = User.objects.filter(address__iexact=to_address)
                 print("matching_to: ", matching_to)
                 for this_to in matching_to:
                     client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
