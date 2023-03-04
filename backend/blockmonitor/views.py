@@ -105,7 +105,7 @@ def register(request):
     # message = client.messages
     client.messages \
         .create(
-        body=f'BlockNotify security code: {challenge}',
+        body=f'👁️‍BlockNotify security code: {challenge}',
         from_=TWILIO_FROM_NUMBER,  # our service number
         # status_callback='http://postb.in/1234abcd',
         to=f'{sanitized_phone}'

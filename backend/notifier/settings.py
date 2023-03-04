@@ -140,6 +140,8 @@ TWILIO_FROM_NUMBER = '+18888888888'
 TWILIO_AUTH_TOKEN = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 TWILIO_ACCOUNT_SID = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
+NODE_WSS = "wss://mainnet.infura.io/ws/v3/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
 try:
     from notifier.local_settings import *
 except ImportError as e:
