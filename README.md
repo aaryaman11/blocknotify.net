@@ -7,16 +7,17 @@ Why BlockNotify?
 - Self-hosting enables privacy and is a decentralized solution
 
 What differentiates BlockNotify?
-- Any custom contracts can be added
-- We support gas transactions as well
-- We can scan all ERC-20s for an address
-- We use live chain data from a node there is no delay
-- We can notify all registered users on a new block
-- No API fees
+- [x] Any custom contracts can be added
+- [ ] We support gas transactions as well
+- [ ] We can scan all ERC-20s for an address
+- [x] We use live chain data from a node there is no delay
+- [x] We can notify all registered users on a new block
+- [x] No API fees if self-hosting
 
-Front-end Images
-- Gas send/receive
-- ERC-20/721/1155 send/receive
+Front-end
+- [ ] Phone Input
+- [ ] Gas send/receive
+- [ ] ERC-20/721/1155 send/receive
 
 Future Adds
 - MFA w/ Phones + MultiSig before send (Hold, Cold, Phone)
