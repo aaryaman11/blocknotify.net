@@ -134,6 +134,20 @@ def verify(request):
     # return {"address": address}
 
 
+@api.post("/delete")
+def delete(request):
+    data = json.loads(request.body)
+    signature = data['signature']
+    public_key = recover_public_key(bytes.fromhex(signature[2:]), "delete")
+    address = public_key.to_checksum_address()
+    # TODO: add timestamp, before we run this remove all pending registrations up to ?10 min? ago
+    user = User.objects.filter(address=address)
+    if len(user) != 1:  # NOTE: 2+ are not allowed (unique=true), but let's only fall through with 1
+        raise RegistrationMissingException("This address is not currently registered!")
+    user[0].delete()
+    return {"address": user[0].address}
+
+
 @api.get("/status")
 def status(request):
     data = request.GET

@@ -83,7 +83,7 @@ function SignForm(props) {
                     className="btn btn-primary"
                     onClick={sign}
                 >
-                    Sign
+                    Sign to Verify
                 </button>
             </div>
             <div className="input-group w-100 mb-1">

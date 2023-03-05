@@ -9,9 +9,9 @@ export default function Footer() {
                 className="col col-12 mt-2 p-3 text-warning bg-dark bg-gradient border-secondary border rounded-3"
                 style={{'--bs-bg-opacity': 0.75}}
             >
-                Add the events you want to be notified for. If you have any questions join us in{' '}
+                Special thanks to ETH Denver hosts and sponsors for the opportunity to BUIDL this project. If you have any questions join us in{' '}
                 <a
-                    href="https://discord.gg/jsBsDbF8Ke"
+                    href="https://discord.gg/NjmmJ4bQxP"
                     className="text-light"
                     target="_blank"
                     rel="noreferrer"
@@ -26,7 +26,7 @@ export default function Footer() {
                 <footer
                     className="d-flex flex-wrap justify-content-between align-items-top py-3 my-4 border-top container">
                     <p className="col-md-4 mb-0 text-light">
-                        © 2023 BlockNotify Founders
+                        © 2023 Sooth + A + J
                     </p>
                     <a
                         href="/"
