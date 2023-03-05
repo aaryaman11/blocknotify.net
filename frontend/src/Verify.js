@@ -52,7 +52,11 @@ function SignForm(props) {
             addError(error);
         }
     };
-
+    const keyHandler = (event) => {
+        if (event.keyCode === 13) {
+            sign();
+        }
+    }
     if (chainState.connected) {
         return (<div className="row align-middle">
             <div className="input-group w-100 mb-1">
@@ -77,6 +81,7 @@ function SignForm(props) {
                     aria-describedby="basic-addon1"
                     value={challenge}
                     onChange={(e) => setChallenge(e.target.value)}
+                    onKeyDown = {keyHandler}     
                 />
                 <button
                     type="button"
