@@ -15,7 +15,7 @@ import Form from 'react-bootstrap/Form';
 
 
 
-// import {Button, Input} from "reactstrap";
+//import {Input} from "react-bootstrap/Input";
 // import {Telephone} from "react-bootstrap-icons";
 
 function getMessageToSign(message) {
@@ -73,19 +73,24 @@ function SignForm(props) {
             setValidPhoneNumber(false);
           }
     },[phone, setPhone]);
-    // React.useEffect(() => {
-    //     const phoneInput = intlTelInput(phoneInputRef.current, {
-    //     utilsScript:
-    //         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    //     });
+    React.useEffect(() => {
+        console.log(phoneInputRef.current)
+        const phoneInput = intlTelInput(phoneInputRef.current, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
         
-    //     return () => {
-    //     phoneInput.destroy();
-    //     };
-    // }, [])
+        return () => {
+        phoneInput.destroy();
+        };
+    }, [])
     // onSubmit={sign}
     
-
+    const keyHandler = (event) => {
+        if (event.keyCode === 13) {
+            sign();
+        }
+    }
     if (chainState.connected) {
         return (<div className="row align-middle">
             <div className="input-group w-100 mb-1">
@@ -105,14 +110,16 @@ function SignForm(props) {
                         </svg>
                     </span>
                     <input
+                        ref={phoneInputRef}
                         type="text"
-                        className="form-control"
+                        className={"form-control "+(validPhoneNumber ? '' : 'border-danger')}
                         placeholder="Phone Number"
                         aria-label="Phone Number"
                         aria-describedby="basic-addon1"
                         value={phone}
-                        // invalid={!validPhoneNumber}
+                        //invalid={!validPhoneNumber}
                         onChange={(e) => setPhone(e.target.value)}
+                        onKeyDown = {keyHandler}     
                     />
                     <button
                         className="btn btn-success"
