@@ -15,8 +15,8 @@ import Form from 'react-bootstrap/Form';
 
 
 
-import {Button, Input} from "reactstrap";
-import {Telephone} from "react-bootstrap-icons";
+// import {Button, Input} from "reactstrap";
+// import {Telephone} from "react-bootstrap-icons";
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
