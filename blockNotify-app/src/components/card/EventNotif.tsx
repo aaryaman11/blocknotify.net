@@ -35,6 +35,7 @@ export default function Default(props: {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "secondaryGray.600";
 
+  // handle phone number input
   const [phoneNumber, setPhoneNumber] = useState("");
   const handlePhoneNumberChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -42,6 +43,7 @@ export default function Default(props: {
     setPhoneNumber(event.target.value);
   };
 
+  // handling phone code input
   const [phoneCode, setPhoneCode] = useState("");
   const handlePhoneCodeChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -253,12 +255,21 @@ export default function Default(props: {
               <Input
                 value={phoneCode}
                 onChange={handlePhoneCodeChange}
-                disabled={verifySignature !== "" ? false : true}
+                disabled={
+                  recoveredNumberAddress && verifySignature !== ""
+                    ? false
+                    : true
+                }
               />
               <Button
                 ml={2}
                 colorScheme="blue"
-                disabled={verifySignature !== "" ? false : true}
+                disabled={
+                  recoveredNumberAddress && verifySignature !== ""
+                    ? false
+                    : true
+                }
+                onClick={handleSubmitVerify}
               >
                 Verify
               </Button>
