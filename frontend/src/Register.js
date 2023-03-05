@@ -10,7 +10,10 @@ import {Messages, useStatus} from './StatusContext';
 import {Buffer} from "buffer";
 import axios from "axios";
 import env from "react-dotenv";
+import intlTelInput from "intl-tel-input";
 import Form from 'react-bootstrap/Form';
+
+
 import {Button, Input} from "reactstrap";
 
 function getMessageToSign(message) {
@@ -23,6 +26,8 @@ function SignForm(props) {
     const [phone, setPhone] = React.useState('');
     const [signature, setSignature] = React.useState('');
     const [validPhoneNumber, setValidPhoneNumber] = React.useState(false);
+    const [phoneInput, setPhoneInput] = React.useState(null);
+    const phoneInputRef = React.useRef(null);
 
     React.useEffect(() => {
         if (signature && signature !== "") {
@@ -66,6 +71,16 @@ function SignForm(props) {
             setValidPhoneNumber(false);
           }
     },[phone, setPhone]);
+    React.useEffect(() => {
+        const phoneInput = intlTelInput(phoneInputRef.current, {
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+        
+        return () => {
+        phoneInput.destroy();
+        };
+    }, [])
     
 
     if (chainState.connected) {
@@ -85,8 +100,10 @@ function SignForm(props) {
                                 d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"></path>
                         </svg>
                     </span>
-                    <Input
-                        type="text"
+                    <input //have to check the ref
+                        type="tel"
+                        ref={phoneInputRef}
+                        id = "phone"
                         className="form-control"
                         placeholder="Phone Number"
                         aria-label="Phone Number"
@@ -95,10 +112,13 @@ function SignForm(props) {
                         invalid={!validPhoneNumber}
                         onChange={(e) => setPhone(e.target.value)}
                     />
-                    <Button
+                    
+                     <Button
+                        type="submit"
                         className="btn btn-primary"
                         onClick={sign}
                     >Sign</Button>
+                    
                 </Form>
                 {/*<input*/}
                 {/*    type="text"*/}
