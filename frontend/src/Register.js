@@ -12,6 +12,7 @@ import axios from "axios";
 import env from "react-dotenv";
 import Form from 'react-bootstrap/Form';
 import {Button, Input} from "reactstrap";
+import {Telephone} from "react-bootstrap-icons";
 
 function getMessageToSign(message) {
     return Buffer.from(message, 'utf-8');
@@ -72,6 +73,7 @@ function SignForm(props) {
         return (<div className="row align-middle">
             <div className="input-group w-100 mb-1">
                 <Form>
+                    <Telephone />
                     <span className="input-group-text" id="basic-addon1">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

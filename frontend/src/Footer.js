@@ -1,7 +1,5 @@
 import React from 'react';
-// import {SVG} from 'logo.svg';
-// import {SVG} from './logo.svg';
-import {ReactComponent as SVG} from './logo.svg';
+import SVG from './logo.svg';
 
 
 export default function Footer() {
@@ -34,7 +32,12 @@ export default function Footer() {
                         href="/"
                         className="col col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
                     >
-                        <img src={SVG} alt="BlockNotify Logo" />
+                        <img
+                            src={SVG}
+                            alt="BlockNotify Logo"
+                            width="64"
+                            height="64"
+                        />
                     </a>
                     <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
                         <li className="ms-3">
