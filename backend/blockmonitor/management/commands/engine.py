@@ -110,7 +110,7 @@ class Command(BaseCommand):
                     # message = client.messages
                     client.messages \
                         .create(
-                        body=f'👁️‍BlockNotify: Watch Alert! A new transaction has been completed. Sent {amount} of {contract} from {from_address} to {to_address}',
+                        body=f'⌜👁⌟BlockNotify: Watch Alert! ▿Received {amount} of {contract} from {from_address} to {to_address}',
                         from_=TWILIO_FROM_NUMBER,  # our service number
                         # status_callback='http://postb.in/1234abcd',
                         to=f'{this_from.phone}'
@@ -124,7 +124,7 @@ class Command(BaseCommand):
                     # message = client.messages
                     client.messages \
                         .create(
-                        body=f'👁️‍BlockNotify: Watch Alert! A new transaction has been completed. Received {amount} of {contract} from {from_address} to {to_address}',
+                        body=f'⌜👁⌟BlockNotify: Watch Alert! ▵Sent {amount} of {contract} from {from_address} to {to_address}',
                         from_=TWILIO_FROM_NUMBER,  # our service number
                         # status_callback='http://postb.in/1234abcd',
                         to=f'{this_to.phone}'

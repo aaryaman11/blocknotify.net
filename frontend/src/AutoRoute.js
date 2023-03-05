@@ -11,7 +11,7 @@ import Register from "./Register";
 import {Alert} from "react-bootstrap";
 import axios from "axios";
 import Verify from "./Verify";
-import SelectEvents from "./SelectEvents";
+import DeleteAccount from "./DeleteAccount";
 import env from "react-dotenv";
 
 
@@ -85,7 +85,7 @@ export default function AutoRoute() {
     if (state.accounts.length === 0) {
         return noWalletConnectedView();
     } else if (status === "exists") {
-        return (<SelectEvents/>)
+        return (<DeleteAccount/>)
     } else if (status === "pending") {
         return (<Verify onReload={setStatus}/>)
     } else if (status === "new") {
