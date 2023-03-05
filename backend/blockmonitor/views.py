@@ -105,7 +105,7 @@ def register(request):
     # message = client.messages
     client.messages \
         .create(
-        body=f'BlockNotify security code: {challenge}',
+        body=f'👁️‍BlockNotify security code: {challenge}',
         from_=TWILIO_FROM_NUMBER,  # our service number
         # status_callback='http://postb.in/1234abcd',
         to=f'{sanitized_phone}'
@@ -132,6 +132,20 @@ def verify(request):
     new_user = User.objects.create(phone=verifications[0].phone, address=address)
     return {"address": new_user.address}
     # return {"address": address}
+
+
+@api.post("/delete")
+def delete(request):
+    data = json.loads(request.body)
+    signature = data['signature']
+    public_key = recover_public_key(bytes.fromhex(signature[2:]), "delete")
+    address = public_key.to_checksum_address()
+    # TODO: add timestamp, before we run this remove all pending registrations up to ?10 min? ago
+    user = User.objects.filter(address=address)
+    if len(user) != 1:  # NOTE: 2+ are not allowed (unique=true), but let's only fall through with 1
+        raise RegistrationMissingException("This address is not currently registered!")
+    user[0].delete()
+    return {"address": user[0].address}
 
 
 @api.get("/status")

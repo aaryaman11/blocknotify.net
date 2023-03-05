@@ -9,7 +9,7 @@ function Logo() {
     return (
         <a href="/" className="d-flex justify-content-center">
             <img
-                src="logo192.png"
+                src="logo.svg"
                 style={{
                     width: 48 + 'px',
                     height: 48 + 'px'
