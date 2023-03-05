@@ -16,10 +16,6 @@ import axios from "axios";
 import { useAccount, useSignMessage } from "wagmi";
 import { verifyMessage } from "ethers/lib/utils.js";
 
-function getMessageToSign(message: any) {
-  return Buffer.from(message, "utf-8");
-}
-
 export default function Default(props: {
   startContent?: JSX.Element;
   endContent?: JSX.Element;
@@ -62,6 +58,7 @@ export default function Default(props: {
       // Verify signature when sign message succeeds
       const address = verifyMessage(variables.message, data);
       recoveredNumberAddress.current = address;
+      setNumberSignature(data);
     },
     onError(error) {
       toast({
@@ -84,6 +81,7 @@ export default function Default(props: {
       // Verify signature when sign message succeeds
       const address = verifyMessage(variables.message, data);
       recoveredVerifyAddress.current = address;
+      setVerifySignature(data);
     },
     onError(error) {
       toast({
